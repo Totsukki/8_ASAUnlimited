@@ -1,0 +1,180 @@
+{% load static %}
+<html>
+
+<head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Sen&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link href="{% static 'assets/styles.css' %}" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.css" integrity="sha512-Mo79lrQ4UecW8OCcRUZzf0ntfMNgpOFR46Acj2ZtWO8vKhBvD79VCp3VOKSzk6TovLg5evL3Xi3u475Q/jMu4g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.14/jquery.datetimepicker.css" integrity="sha512-bYPO5jmStZ9WI2602V2zaivdAnbAhtfzmxnEGh9RwtlI00I9s8ulGe4oBa5XxiC6tCITJH/QG70jswBhbLkxPw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+
+<body>
+    <header>
+        <div class="container">
+            <!-- <p class="logo"><a href="#" style="color: #fff; line-height:50px;"><b style="font-size:60px">ASA</b><br>Unlimited</a> -->
+            <a href="index">
+                <img  class="logo" style="cursor: pointer;"src="{% static 'assets/images/ASA Unlimited-logos/ASA Unlimited-logos_white.png' %}" alt="ASA Unlimited">
+            </a>
+            <nav>
+                <ul>
+                    <li><a class="nav-links" href="#">Home</a></li>
+                    <li><a class="nav-links" href="index#about">About</a></li>
+                    <li><a class="nav-links" href="index#about-team">Team</a></li>
+                    <li><a class="nav-links" href="index#contact-us">Contact Us</a></li>
+                    <li><a class="nav-links" href="login">Sign In</a></li>
+                </ul>
+                <nav>
+        </div>
+    </header>
+    <form class="searchForm" action="" method="POST">
+        {% csrf_token %}
+        <div type="button" class="main-search">
+            <div class="time-of-day">
+                <input type="radio" class="btn-check" name="options" id="morning" value="Morning" autocomplete="off" checked required>
+                <label class="btn btn-secondary" for="morning">Morning</label>
+
+                <input type="radio" class="btn-check" name="options" id="afternoon" value="Afternoon" autocomplete="off">
+                <label class="btn btn-secondary" for="afternoon">Afternoon</label>
+
+                <input type="radio" class="btn-check" name="options" id="evening" value="Evening" autocomplete="off">
+                <label class="btn btn-secondary" for="evening">Evening</label>
+            </div>            
+            <div class="card search--box">
+                <div class="search-box">
+                    <span class="dropdown">
+                        <label for="room-type">&nbsp;Room Type:</label>
+                        <select class="picker custom-select-s" aria-labelledby="room-type" name="rmtype">
+                            <option value="Standard">Standard</option>
+                            <option value="Deluxe">Deluxe</option>
+                            <option value="Premium">Premium</option>
+                        </select>
+                    </span>
+                    <span class="dropdown">
+                        <label for="date-sched">&nbsp;Date: </label>
+                        <input name="sched" id="datetimepicker" placeholder="--/--/----" class="picker" type="text" required onkeypress="return false" autocomplete='off'>
+                        <i class="fa fa-calendar" style="cursor: pointer; margin-left: -30px; pointer-events: none;"></i>                        
+                    </span>
+                    <span class="dropdown">
+                        <label for="room-price">&nbsp;Price:</label>
+                        <select class="picker room-price custom-select-m" name="prc" aria-labelledby="room-price">
+                            <option value="3000">>3000</option>
+                            <option value="5000">>5000</option>
+                            <option value="100000">>10000</option>
+                        </select>
+                    </span>
+                    <span class="search">
+                        <input type="text" class="rmname" name="rmname" autocomplete="off" placeholder="Type a room name">
+                        <button class="btn btn-primary custom-btn" name="btnSearch">Search</button>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </form>
+    <div id="search-result" class="search-result">
+        <h1 style="margin-top: 20px"><b style="font-size: 50px;">Search Result</b></h1>
+
+        {% for temp in temps %}
+        <div class="search-result-card">
+            <div class="row">
+                <div class="col">
+                    <div class="img-div">
+                        <img class="search-result-img" src="{% static temp.rmimg %}" onerror="this.onerror=null;this.src='{% static 'assets/images/conferenceroom_images/default.jpg' %};'">
+                    </div>
+                </div>
+                <div class="col-lg">
+                    <div class="search-result-text">
+                        <input name="rmid" value="{{room.rmid}}" hidden></input>
+                        <h2 style="font-size: 3vw;">{{temp.rmnum}} | {{temp.rmname}}<h1>
+                        <h4 style="color: #5D9F5C; font-size: 3em; margin-top: -15px;"><b>₱{{temp.prc}}</b></h4>
+                        <br><br>
+                        <h6><i class="fa fa-user"></i><b> {{temp.cap}}</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            <form method="POST" style="display: inline;">
+                                {% csrf_token %}
+                                <input name="rmid" value="{{temp.rmid}}" hidden></input>
+                                <button class="btn btn-info" name="btnVisit">Visit</button>&nbsp;
+                            </form>
+                            <a href="login" class="btn btn-primary" name="btnBookNow">Book Now</a></h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+    <footer>
+        <div>
+            Follow us on our social media for daily updates!<br>
+            <a class="icon" id="facebook" href="#"><img src="https://img.icons8.com/ios-filled/50/000000/facebook-new.png" alt=""></a>
+            <a class="icon" id="instagram" href="#"><img src="https://img.icons8.com/ios-filled/50/000000/instagram-new--v1.png" /></a>
+            <a class="icon" id="twitter" href="#"><img src="https://img.icons8.com/ios-filled/50/000000/twitter-circled--v1.png'" /></a>
+            <a class="icon" id="youtube" href="#"><img src="https://img.icons8.com/ios-filled/50/000000/youtube-squared.png" /></a>
+            <a class="icon" id="whatsapp" href="#"><img src="https://img.icons8.com/ios-filled/50/000000/whatsapp--v1.png" /></a>
+            <a class="icon" id="linkedin" href="#"><img src="https://img.icons8.com/ios-filled/50/000000/linkedin-circled--v1.png" /></a>
+            <a class="icon" id="tiktok" href="#"><img src="https://img.icons8.com/ios-filled/50/000000/tiktok--v1.png" /></a>
+        </div>
+        <br>
+        <div>
+            ASA Unlimited All Rights Reserved 2022.
+        </div>
+    </footer>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.14/jquery.datetimepicker.full.min.js" integrity="sha512-KL5fDK2RZmIUFucgSH+KCPs93qUv1+Vflr731R9uh+hb82P9YcZM1nk4TWgOznWd+HuI2GtNaG5rLQwb+8xDNw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script>
+        jQuery('#datetimepicker').datetimepicker(
+            {
+                timepicker: false,
+                format: 'Y-m-d',
+                minDate:'0',
+            }
+        );
+    </script>
+    <script>
+        $('#carousel-example').on('slide.bs.carousel', function(e) {
+            var $e = $(e.relatedTarget);
+            var idx = $e.index();
+            var itemsPerSlide = 5;
+            var totalItems = $('.carousel-item').length;
+
+            if (idx >= totalItems - (itemsPerSlide - 1)) {
+                var it = itemsPerSlide - (totalItems - idx);
+                for (var i = 0; i < it; i++) {
+                    // append slides to end
+                    if (e.direction == "left") {
+                        $('.carousel-item').eq(i).appendTo('.carousel-inner');
+                    } else {
+                        $('.carousel-item').eq(0).appendTo('.carousel-inner');
+                    }
+                }
+            }
+        });
+
+        function hideSearchResult() {
+            var x = document.getElementById("search-result");
+            var y = document.getElementById("content-all");
+            y.style.display = "block";
+            x.style.display = "none";
+          }
+        function unhideSearchResult() {
+            var x = document.getElementById("search-result");
+            var y = document.getElementById("content-all");
+              x.style.display = "block";
+              y.style.display = "none";
+          }
+
+        {% comment %} window.onload = function() {
+            var reloading = sessionStorage.getItem("reloading");
+            if (reloading) {
+                sessionStorage.removeItem("reloading");
+                unhideSearchResult();
+            }
+        } {% endcomment %}
+    </script>
+</body>
+
+</html>

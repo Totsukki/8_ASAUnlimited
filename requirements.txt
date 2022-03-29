@@ -1,0 +1,6 @@
+asgiref==3.4.1
+charset-normalizer==2.0.12
+Django==3.2.6
+mysqlclient==2.0.3
+pytz==2021.1
+sqlparse==0.4.1

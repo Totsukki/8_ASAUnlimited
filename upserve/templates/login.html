@@ -1,0 +1,81 @@
+{% load static %}
+<!-- Navbar-->
+
+<head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Sen&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"> {% comment %}
+    <link href="{% static 'assets/styles.css' %}" rel="stylesheet" type="text/css"> {% endcomment %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="{% static 'assets/login.css' %}" rel="stylesheet" type="text/css">
+</head>
+
+<header class="header">
+    <nav class="navbar navbar-expand-lg navbar-light py-3">
+        <div class="container">
+            <!-- Navbar Brand -->
+            <a href="index" class="navbar-brand">
+                <img src="{% static 'assets/images/ASA Unlimited-logos/ASA Unlimited-logos_black.png' %}" alt="ASA Unlimited" width="150">
+            </a>
+        </div>
+    </nav>
+</header>
+
+<div class="container">
+    <div class="row py-5 mt-4 align-items-center">
+        <!-- For Demo Purpose -->
+        <div class="col-md-5 pr-lg-5 mb-5 mb-md-0">
+            <img src="https://bootstrapious.com/i/snippets/sn-registeration/illustration.svg" alt="" class="img-fluid mb-3 d-none d-md-block">
+            <h1>Welcome~</h1>
+        </div>
+
+        <!-- Registeration Form -->
+        <div class="col-md-7 col-lg-6 ml-auto">
+            <form method="POST" id="loginForm">
+                {% csrf_token %} {% for msg in messages %} 
+                <div class="error-msg">
+                    {{msg}}
+                </div>    
+                {% endfor %}
+
+
+                <div class="row">
+                    <!-- Email Address -->
+                    <div class="input-group col-lg-12 mb-4">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text bg-white px-4 border-md border-right-0">
+                              <i class="fa fa-envelope text-muted"></i>
+                          </span>
+                        </div>
+                        <input id="email" type="email" name="email" placeholder="Email Address" class="form-control bg-white border-left-0 border-md">
+                    </div>
+
+                    <!-- Password -->
+                    <div class="input-group col-lg-12 mb-4">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text bg-white px-4 border-md border-right-0">
+                            <i class="fa fa-key text-muted"></i>
+                        </span>
+                        </div>
+                        <input id="pword" type="password" name="pword" placeholder="Password" class="form-control bg-white border-left-0 border-md">
+                    </div>
+
+                    <!-- Submit Button -->
+                    <div class="form-group col-lg-12 mx-auto mb-0">
+                        <button id="login-btn" type="submit" class="btn btn-primary btn-block py-2 submit">
+                        <span class="font-weight-bold">Login</span>
+                    </button>
+                    </div>
+                    <!-- Already Registered -->
+                    <div class="text-center w-100" style="margin-top:5px;">
+                        <p class="text-muted font-weight-bold">Don't have an account? <a href="signup#container" class="text-primary ml-2">Sign Up</a></p>
+                    </div>
+
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src="{% static 'assets/login.js' %}"></script>

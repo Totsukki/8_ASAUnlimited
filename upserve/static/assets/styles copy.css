@@ -1,0 +1,415 @@
+html {
+    font-family: 'Sen', sans-serif;
+}
+
+body {
+    font-family: 'Sen', sans-serif;
+    margin: 10px 0;
+    background-color: #C8AD55;
+}
+
+header {
+    background: #271F30;
+}
+
+header::after {
+    content: '';
+    display: table;
+    clear: both;
+}
+
+summary {
+    background: #D0FCB3;
+    left: 0;
+    right: 0;
+    display: absolute;
+    font-size: 1rem;
+}
+
+summary:hover {
+    cursor: default;
+}
+
+footer {
+    background: #9BC59D;
+    text-align: center;
+    margin-bottom: -10%;
+    padding: 2% 0 0 0;
+}
+
+footer div {
+    margin: 0 auto;
+    width: auto;
+}
+
+input[type="radio"]+label {
+    background: #6C5A49;
+    border: none;
+}
+
+input[type="radio"]:checked+label {
+    background: #ddd;
+    color: #271F30
+}
+
+input[type="text"] {
+    width: 41.5%;
+    border-radius: 3px 0 0 3px;
+    border-width: 2px;
+}
+
+button.btn.custom-btn {
+    padding: 2px 6px;
+    margin-bottom: 3px;
+    border-radius: 0 3px 3px 0;
+}
+
+nav {
+    float: right;
+}
+
+nav ul {
+    margin-top: 10px;
+    padding: 10px 0;
+    list-style: none;
+}
+
+nav li {
+    display: inline-block;
+    margin: 10px 0 0 50px;
+    transition: all .2s ease-in-out;
+}
+
+nav a {
+    text-decoration: none;
+    color: #FFF;
+    font-size: 20px;
+    padding: 10px;
+}
+
+nav a:hover {
+    background: #9596BA;
+    color: #000;
+    text-decoration: none;
+}
+
+select {
+    border-radius: 0;
+}
+
+.container {
+    width: 90%;
+    margin: -10px auto;
+}
+
+.logo {
+    float: left;
+    width: 10%;
+    padding: 10px 0;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+
+.search {
+    margin: -5px 0 0 4px;
+}
+
+.search-box {
+    margin-bottom: -3px;
+}
+
+.search--box {
+    width: 70%;
+    margin: auto;
+    padding: 5px 0 0 0;
+}
+
+.main-search {
+    margin: 30px 0 0 10px;
+    position: relative;
+}
+
+.dropdown-btn {
+    height: auto;
+    /* border-radius: 0; */
+}
+
+.btn-link,
+.btn-link:hover {
+    text-decoration: none;
+    color: #555;
+}
+
+.dropdown {
+    padding: 8.5px 0;
+    clear: both;
+    border-right: 1px solid #c6c7d4;
+}
+
+.dropdown:hover {
+    color: #777;
+    border-radius: 3px 0 0 3px;
+    text-decoration: none;
+}
+
+.dropdown-toggle::after {
+    color: #666;
+}
+
+.picker {
+    font-family: Sen, sans-serif;
+    border: none;
+    outline: none;
+    padding: none;
+    background: none;
+}
+
+.custom-select-m:hover,
+.dropdown:hover {
+    background: #f0f0f0;
+}
+
+.time-of-day {
+    margin-left: 15%;
+    margin-bottom: -10px;
+}
+
+.time-of-day input {
+    visibility: hidden;
+    margin-left: -10px;
+}
+
+.btn-primary {
+    outline: none;
+}
+
+.btn-primary:focus {
+    outline: none;
+}
+
+.icon {
+    width: 10px;
+}
+
+.top-content {
+    margin-bottom: 50px;
+}
+
+.carousel-control-prev {
+    left: 0;
+    margin-left: 6%;
+}
+
+.carousel-control-next {
+    right: 0;
+    margin-right: 6%;
+}
+
+.carousel-item img {
+    width: 300px;
+    height: auto;
+    border-radius: 10px;
+}
+
+.custom-card {
+    padding: 1%
+}
+
+.about {
+    padding: 2% 15% 5% 15%;
+    background: #E4D7AB;
+}
+
+.about-team {
+    padding: 2% 15% 5% 15%;
+}
+
+.contact-us {
+    padding: 2% 15% 5% 2%;
+}
+
+
+/* different screen sizes */
+
+@media (min-width: 768px) and (max-width: 991px) {
+    /* Show 4th slide on md if col-md-4*/
+    .carousel-inner .active.col-md-4.carousel-item+.carousel-item+.carousel-item+.carousel-item {
+        position: absolute;
+        top: 0;
+        right: -33.3333%;
+        /*change this with javascript in the future*/
+        z-index: -1;
+        display: block;
+        visibility: visible;
+    }
+}
+
+@media (min-width: 576px) and (max-width: 768px) {
+    /* Show 3rd slide on sm if col-sm-6*/
+    .carousel-inner .active.col-sm-6.carousel-item+.carousel-item+.carousel-item {
+        position: absolute;
+        top: 0;
+        right: -50%;
+        /*change this with javascript in the future*/
+        z-index: -1;
+        display: block;
+        visibility: visible;
+    }
+}
+
+@media (min-width: 576px) {
+    .carousel-item {
+        margin-right: 0;
+    }
+    /* show 2 items */
+    .carousel-inner .active+.carousel-item {
+        display: block;
+    }
+    .carousel-inner .carousel-item.active:not(.carousel-item-right):not(.carousel-item-left),
+    .carousel-inner .carousel-item.active:not(.carousel-item-right):not(.carousel-item-left)+.carousel-item {
+        transition: none;
+    }
+    .carousel-inner .carousel-item-next {
+        position: relative;
+        transform: translate3d(0, 0, 0);
+    }
+    /* left or forward direction */
+    .active.carousel-item-left+.carousel-item-next.carousel-item-left,
+    .carousel-item-next.carousel-item-left+.carousel-item,
+    .carousel-item-next.carousel-item-left+.carousel-item+.carousel-item {
+        position: relative;
+        transform: translate3d(-100%, 0, 0);
+        visibility: visible;
+    }
+    /* farthest right hidden item must be also positioned for animations */
+    .carousel-inner .carousel-item-prev.carousel-item-right {
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: -1;
+        display: block;
+        visibility: visible;
+    }
+    /* right or prev direction */
+    .active.carousel-item-right+.carousel-item-prev.carousel-item-right,
+    .carousel-item-prev.carousel-item-right+.carousel-item,
+    .carousel-item-prev.carousel-item-right+.carousel-item+.carousel-item {
+        position: relative;
+        transform: translate3d(100%, 0, 0);
+        visibility: visible;
+        display: block;
+        visibility: visible;
+    }
+}
+
+
+/* MD */
+
+@media (min-width: 768px) {
+    /* show 3rd of 3 item slide */
+    .carousel-inner .active+.carousel-item+.carousel-item {
+        display: block;
+    }
+    .carousel-inner .carousel-item.active:not(.carousel-item-right):not(.carousel-item-left)+.carousel-item+.carousel-item {
+        transition: none;
+    }
+    .carousel-inner .carousel-item-next {
+        position: relative;
+        transform: translate3d(0, 0, 0);
+    }
+    /* left or forward direction */
+    .carousel-item-next.carousel-item-left+.carousel-item+.carousel-item+.carousel-item {
+        position: relative;
+        transform: translate3d(-100%, 0, 0);
+        visibility: visible;
+    }
+    /* right or prev direction */
+    .carousel-item-prev.carousel-item-right+.carousel-item+.carousel-item+.carousel-item {
+        position: relative;
+        transform: translate3d(100%, 0, 0);
+        visibility: visible;
+        display: block;
+        visibility: visible;
+    }
+}
+
+
+/* LG */
+
+@media (min-width: 991px) {
+    /* show 4th item */
+    .carousel-inner .active+.carousel-item+.carousel-item+.carousel-item {
+        display: block;
+    }
+    .carousel-inner .carousel-item.active:not(.carousel-item-right):not(.carousel-item-left)+.carousel-item+.carousel-item+.carousel-item {
+        transition: none;
+    }
+    /* Show 5th slide on lg if col-lg-3 */
+    .carousel-inner .active.col-lg-3.carousel-item+.carousel-item+.carousel-item+.carousel-item+.carousel-item {
+        position: absolute;
+        top: 0;
+        right: -25%;
+        /*change this with javascript in the future*/
+        z-index: -1;
+        display: block;
+        visibility: visible;
+    }
+    /* left or forward direction */
+    .carousel-item-next.carousel-item-left+.carousel-item+.carousel-item+.carousel-item+.carousel-item {
+        position: relative;
+        transform: translate3d(-100%, 0, 0);
+        visibility: visible;
+    }
+    /* right or prev direction //t - previous slide direction last item animation fix */
+    .carousel-item-prev.carousel-item-right+.carousel-item+.carousel-item+.carousel-item+.carousel-item {
+        position: relative;
+        transform: translate3d(100%, 0, 0);
+        visibility: visible;
+        display: block;
+        visibility: visible;
+    }
+}
+
+@media only screen and (max-width: 800px) {
+    nav {
+        float: right;
+        margin: -10px;
+    }
+    nav ul {
+        list-style: none;
+    }
+    nav li {
+        display: inline-block;
+        margin: 0px 0 0 20px;
+        transition: all .2s ease-in-out;
+    }
+    nav a {
+        text-decoration: none;
+        color: #FFF;
+        font-size: 10px;
+    }
+    .logo {
+        float: left;
+        width: 10%;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+    }
+    .search--box {
+        width: 73%;
+        padding-bottom: 1%;
+    }
+    .time-of-day {
+        margin-left: 15%;
+        margin-bottom: -10px;
+    }
+    input[type="text"] {
+        width: 87%;
+    }
+    .picker.room-price {
+        padding-right: 9.9px;
+    }
+}

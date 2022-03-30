@@ -12,9 +12,9 @@ import calendar
 # Create your views here.
 class MyIndexView(View):
 	def get(self, request):
-		rooms = Room.objects.raw("SELECT *, COUNT(tblreserve.rmid_id) as 'count' FROM `tblreserve` RIGHT JOIN tblroom on tblreserve.rmid_id = tblroom.rmid group by rmid order by 'count' desc limit 6")
+		rooms = Room.objects.raw("SELECT *, COUNT(tblReserve.rmid_id) as 'count' FROM `tblReserve` RIGHT JOIN tblRoom on tblReserve.rmid_id = tblRoom.rmid group by rmid order by 'count' desc limit 6")
 		rooms_all = Room.objects.all();
-		p = Room.objects.raw("select * from tblroom where rmtype='Standard'")
+		p = Room.objects.raw("select * from tblRoom where rmtype='Standard'")
 		context = {
 			'rooms' : rooms,
 			'rooms_all' : rooms_all,
@@ -39,7 +39,7 @@ class MyIndexLoggedView(View):
 	def get(self, request):
 		try:
 			logged = Users.objects.get(uid = request.session['uid'])
-			rooms = Room.objects.raw("SELECT *, COUNT(tblreserve.rmid_id) as 'count' FROM `tblreserve` RIGHT JOIN tblroom on tblreserve.rmid_id = tblroom.rmid group by rmid order by 'count' desc limit 6")
+			rooms = Room.objects.raw("SELECT *, COUNT(tblReserve.rmid_id) as 'count' FROM `tblReserve` RIGHT JOIN tblRoom on tblReserve.rmid_id = tblRoom.rmid group by rmid order by 'count' desc limit 6")
 			rooms_all = Room.objects.all();
 			context = {
 				'logged' : logged,
@@ -119,9 +119,9 @@ class MySearchResultsView(View):
 		rmtype = request.GET['rmtype']
 		sched = request.GET['sched']
 		prc = request.GET['prc']
-		# temp = Room.objects.raw("select * from tblroom right join tblreserve on tblreserve.rmid_id = tblroom.rmid where tblreserve.tmslt='%s' AND tblroom.rmtype='%s' AND tblreserve.resdate='%s' AND tblroom.prc>=%s", [timeslot, rmtype, sched, prc])
-		temps = Room.objects.raw("SELECT * FROM tblroom WHERE rmid IN(select * FROM ( SELECT rmid FROM tblroom UNION ALL SELECT rmid_id FROM tblreserve WHERE tblreserve.tmslt=%s  AND tblreserve.resdate=%s)tbl GROUP BY rmid HAVING count(*) = 1 ORDER BY rmid)AND tblroom.prc>=%s AND tblroom.rmtype=%s", [timeslot, sched, prc, rmtype])
-		rooms = Room.objects.raw("SELECT *, COUNT(tblreserve.rmid_id) as 'count' FROM `tblreserve` RIGHT JOIN tblroom on tblreserve.rmid_id = tblroom.rmid group by rmid order by 'count' desc limit 6")
+		# temp = Room.objects.raw("select * from tblRoom right join tblReserve on tblReserve.rmid_id = tblRoom.rmid where tblReserve.tmslt='%s' AND tblRoom.rmtype='%s' AND tblReserve.resdate='%s' AND tblRoom.prc>=%s", [timeslot, rmtype, sched, prc])
+		temps = Room.objects.raw("SELECT * FROM tblRoom WHERE rmid IN(select * FROM ( SELECT rmid FROM tblRoom UNION ALL SELECT rmid_id FROM tblReserve WHERE tblReserve.tmslt=%s  AND tblReserve.resdate=%s)tbl GROUP BY rmid HAVING count(*) = 1 ORDER BY rmid)AND tblRoom.prc>=%s AND tblRoom.rmtype=%s", [timeslot, sched, prc, rmtype])
+		rooms = Room.objects.raw("SELECT *, COUNT(tblReserve.rmid_id) as 'count' FROM `tblReserve` RIGHT JOIN tblRoom on tblReserve.rmid_id = tblRoom.rmid group by rmid order by 'count' desc limit 6")
 		rooms_all = Room.objects.all();
 		context = {
 			'rooms' : rooms,
@@ -144,8 +144,8 @@ class MySearchResultsView(View):
 				prc = request.POST.get('prc', False)
     
 				# print("timeslot:", timeslot, "room type:" + rmtype, "sched:", sched, "prc:", prc)
-				# p = Room.objects.raw("select * from tblroom where rmtype=%s and sched=%s and tmslt=%s and prc=%s",[rmtype] )
-				# temp = Room.objects.raw("select * from tblroom right join tblreserve on tblreserve.rmid_id = tblroom.rmid where tblreserve.tmslt='%s' AND tblroom.rmtype='%s' AND tblreserve.resdate='%s' AND tblroom.prc>=%s", timeslot, rmtype, sched, prc)
+				# p = Room.objects.raw("select * from tblRoom where rmtype=%s and sched=%s and tmslt=%s and prc=%s",[rmtype] )
+				# temp = Room.objects.raw("select * from tblRoom right join tblReserve on tblReserve.rmid_id = tblRoom.rmid where tblReserve.tmslt='%s' AND tblRoom.rmtype='%s' AND tblReserve.resdate='%s' AND tblRoom.prc>=%s", timeslot, rmtype, sched, prc)
 				return redirect('/searchresults?timeslot=' + timeslot + '&rmtype=' + rmtype + '&sched=' + sched + '&prc=' + prc)
 			else:
 				return redirect('my_index_view')
@@ -158,9 +158,9 @@ class MyIndexLogged_SearchResultsView(View):
 			sched = request.GET['sched']
 			prc = request.GET['prc']
 			logged = Users.objects.get(uid = request.session['uid'])
-			rooms = Room.objects.raw("SELECT *, COUNT(tblreserve.rmid_id) as 'count' FROM `tblreserve` RIGHT JOIN tblroom on tblreserve.rmid_id = tblroom.rmid group by rmid order by 'count' desc limit 6")
+			rooms = Room.objects.raw("SELECT *, COUNT(tblReserve.rmid_id) as 'count' FROM `tblReserve` RIGHT JOIN tblRoom on tblReserve.rmid_id = tblRoom.rmid group by rmid order by 'count' desc limit 6")
 			rooms_all = Room.objects.all();
-			temps = Room.objects.raw("SELECT * FROM tblroom WHERE rmid IN(select * FROM ( SELECT rmid FROM tblroom UNION ALL SELECT rmid_id FROM tblreserve WHERE tblreserve.tmslt=%s  AND tblreserve.resdate=%s)tbl GROUP BY rmid HAVING count(*) = 1 ORDER BY rmid)AND tblroom.prc>=%s AND tblroom.rmtype=%s", [timeslot, sched, prc, rmtype])
+			temps = Room.objects.raw("SELECT * FROM tblRoom WHERE rmid IN(select * FROM ( SELECT rmid FROM tblRoom UNION ALL SELECT rmid_id FROM tblReserve WHERE tblReserve.tmslt=%s  AND tblReserve.resdate=%s)tbl GROUP BY rmid HAVING count(*) = 1 ORDER BY rmid)AND tblRoom.prc>=%s AND tblRoom.rmtype=%s", [timeslot, sched, prc, rmtype])
 			context = {
 				'logged' : logged,
 				'rooms' : rooms,
@@ -188,8 +188,8 @@ class MyIndexLogged_SearchResultsView(View):
 				prc = request.POST.get('prc', False)
     
 				# print("timeslot:", timeslot, "room type:" + rmtype, "sched:", sched, "prc:", prc)
-				# p = Room.objects.raw("select * from tblroom where rmtype=%s and sched=%s and tmslt=%s and prc=%s",[rmtype] )
-				# temp = Room.objects.raw("select * from tblroom right join tblreserve on tblreserve.rmid_id = tblroom.rmid where tblreserve.tmslt='%s' AND tblroom.rmtype='%s' AND tblreserve.resdate='%s' AND tblroom.prc>=%s", timeslot, rmtype, sched, prc)
+				# p = Room.objects.raw("select * from tblRoom where rmtype=%s and sched=%s and tmslt=%s and prc=%s",[rmtype] )
+				# temp = Room.objects.raw("select * from tblRoom right join tblReserve on tblReserve.rmid_id = tblRoom.rmid where tblReserve.tmslt='%s' AND tblRoom.rmtype='%s' AND tblReserve.resdate='%s' AND tblRoom.prc>=%s", timeslot, rmtype, sched, prc)
 				return redirect('/index_logged-searchresults?timeslot=' + timeslot + '&rmtype=' + rmtype + '&sched=' + sched + '&prc=' + prc)
 			elif 'btnReserve' in request.POST:
 				rmid = request.POST.get("rmid")
@@ -212,7 +212,7 @@ class MyIndexLogged_SearchResultsView(View):
 class MyAdminDashboardView(View):
 	def get(self, request):
 		users = Users.objects.all()
-		room = Room.objects.raw("SELECT *, COUNT(tblreserve.rmid_id) as 'count' FROM `tblreserve` RIGHT JOIN tblroom on tblreserve.rmid_id = tblroom.rmid group by rmid order by count desc limit 1")
+		room = Room.objects.raw("SELECT *, COUNT(tblReserve.rmid_id) as 'count' FROM `tblReserve` RIGHT JOIN tblRoom on tblReserve.rmid_id = tblRoom.rmid group by rmid order by count desc limit 1")
 		if request.method == 'GET' and ('month' and 'week' and 'day') in request.GET:
 			mon = request.GET['month']
 			wk = request.GET['week']
@@ -227,9 +227,9 @@ class MyAdminDashboardView(View):
 				day_exday = datetime.strptime(dy, "%Y-%m-%d").day
 				day_exdayf = datetime.strptime(dy, "%Y-%m-%d").date()
 				day_exdayformat = day_exdayf.strftime("%B %d, %Y")
-				filt_m = Reserve.objects.raw("SELECT resid, monthname(resdate) as monthname, COUNT(*) as count FROM `tblreserve` where year(resdate) = '%s' AND month(resdate) = '%s'", [exyear, exmonth])
-				filt_w = Reserve.objects.raw("SELECT resid, week(resdate) as week, COUNT(*) as count FROM `tblreserve` where year(resdate) = '%s' and week(resdate) = '%s'", [wk_exyear, wk_exweek])
-				filt_d = Reserve.objects.raw("SELECT resid, COUNT(*) as count FROM `tblreserve` where year(resdate) = '%s' and month(resdate) = '%s' AND day(resdate) = '%s'", [exyear, exmonth, day_exday])
+				filt_m = Reserve.objects.raw("SELECT resid, monthname(resdate) as monthname, COUNT(*) as count FROM `tblReserve` where year(resdate) = '%s' AND month(resdate) = '%s'", [exyear, exmonth])
+				filt_w = Reserve.objects.raw("SELECT resid, week(resdate) as week, COUNT(*) as count FROM `tblReserve` where year(resdate) = '%s' and week(resdate) = '%s'", [wk_exyear, wk_exweek])
+				filt_d = Reserve.objects.raw("SELECT resid, COUNT(*) as count FROM `tblReserve` where year(resdate) = '%s' and month(resdate) = '%s' AND day(resdate) = '%s'", [exyear, exmonth, day_exday])
 				
 			context = {
 				'users'	: users,
@@ -262,9 +262,9 @@ class MyAdminDashboardView(View):
 			day_exday = datetime.now().day
 			day_exdayf = datetime.now().date()
 			day_exdayformat = day_exdayf.strftime("%B %d, %Y")
-			filt_m = Reserve.objects.raw("SELECT resid, monthname(resdate) as monthname, COUNT(*) as count FROM `tblreserve` where year(resdate) = '%s' AND month(resdate) = '%s'", [exyear, exmonth])
-			filt_w = Reserve.objects.raw("SELECT resid, week(resdate) as week, COUNT(*) as count FROM `tblreserve` where year(resdate) = '%s' and week(resdate) = '%s'", [wk_exyear, wk_exweek])
-			filt_d = Reserve.objects.raw("SELECT resid, COUNT(*) as count FROM `tblreserve` where year(resdate) = '%s' and month(resdate) = '%s' AND day(resdate) = '%s'", [exyear, exmonth, day_exday])
+			filt_m = Reserve.objects.raw("SELECT resid, monthname(resdate) as monthname, COUNT(*) as count FROM `tblReserve` where year(resdate) = '%s' AND month(resdate) = '%s'", [exyear, exmonth])
+			filt_w = Reserve.objects.raw("SELECT resid, week(resdate) as week, COUNT(*) as count FROM `tblReserve` where year(resdate) = '%s' and week(resdate) = '%s'", [wk_exyear, wk_exweek])
+			filt_d = Reserve.objects.raw("SELECT resid, COUNT(*) as count FROM `tblReserve` where year(resdate) = '%s' and month(resdate) = '%s' AND day(resdate) = '%s'", [exyear, exmonth, day_exday])
 			
 			context = {
 			'users'	: users,

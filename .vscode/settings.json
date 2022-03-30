@@ -1,0 +1,4 @@
+{
+    "appService.defaultWebAppToDeploy": "/subscriptions/bde64491-af72-4fba-b53b-795562ead223/resourceGroups/G1_8/providers/Microsoft.Web/sites/8-ASAUnlimited",
+    "appService.deploySubpath": "."
+}

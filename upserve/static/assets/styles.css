@@ -1,10 +1,10 @@
 html {
-    font-family: 'Sen', sans-serif;
+    font-family: Sen, sans-serif;
     scroll-behavior: smooth;
 }
 
 body {
-    font-family: 'Sen', sans-serif;
+    font-family: Sen, sans-serif;
     background-color: #e6e3dc;
 }
 
@@ -24,11 +24,12 @@ header::after {
 }
 
 summary {
-    background: #D0FCB3;
+    background: #fff;
     left: 0;
     right: 0;
     display: absolute;
     font-size: 1rem;
+    height: 55%;
 }
 
 summary:hover {
@@ -36,7 +37,7 @@ summary:hover {
 }
 
 footer {
-    background: #9BC59D;
+    background: #4e4b61;
     text-align: center;
     margin-bottom: -10%;
     padding: 2% 0 0 0;
@@ -179,6 +180,7 @@ select {
 input[type="text"].picker {
     width: 15%;
 }
+
 input[type="text"].datepicker {
     width: 20%;
 }
@@ -259,7 +261,7 @@ input[type="text"].datepicker {
 
 .about {
     padding: 2% 15% 5% 15%;
-    background: #c3c4ce;
+    background: #c7c1b2;
 }
 
 .about-team {

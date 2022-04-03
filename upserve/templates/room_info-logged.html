@@ -2,37 +2,47 @@
 <html>
 
 <head>
-    <style>
-
-    </style>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Sen&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link href="{% static 'assets/styles.css' %}" rel="stylesheet" type="text/css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.14/jquery.datetimepicker.css" integrity="sha512-bYPO5jmStZ9WI2602V2zaivdAnbAhtfzmxnEGh9RwtlI00I9s8ulGe4oBa5XxiC6tCITJH/QG70jswBhbLkxPw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 
 <body>
-    <header style="position: absolute;">
-        <div class="container">
+    <header id="mydiv">
+        <div class="container" id="container">
             <!-- <p class="logo"><a href="#" style="color: #fff; line-height:50px;"><b style="font-size:60px">ASA</b><br>Unlimited</a> -->
-            <a href="index_logged">
+            <a href="index">
                 <img class="logo" style="cursor: pointer;" src="{% static 'assets/images/ASA Unlimited-logos/ASA Unlimited-logos_white.png' %}" alt="ASA Unlimited">
             </a>
             <nav>
                 <form class="logoutForm" method="POST">
-                    {% csrf_token %} 
-                <ul>
-                    <li><a class="nav-links" href="#">Home</a></li>
-                    <li><a class="nav-links" href="index_logged#about">About</a></li>
-                    <li><a class="nav-links" href="index_logged#about-team">Team</a></li>
-                    <li><a class="nav-links" href="index_logged#contact-us">Contact Us</a></li>                    
-                    <li><a class="logout nav-links"><button type="submit" name="btnLogout" class="button_slide slide_right" data-hover: "Logout"><span>{{ logged.fname }}<span></button></a></li>
-                    </form>
+                    {% csrf_token %}
+                    <ul>
+                        <li><a class="nav-links" href="#">Home</a></li>
+                        <li><a class="nav-links" href="index_logged#about">About</a></li>
+                        <li><a class="nav-links" href="index_logged#about-team">Team</a></li>
+                        <li><a class="nav-links" href="index_logged#contact-us">Contact Us</a></li>
+                        <li>
+                            <div class="btn-group">
+                                <button class="logout nav-links btn btn-link" style="font-size: 1.3em; color: white; text-decoration: none;" type="button">{{ logged.fname }}</button>
+                                <button type="button" style="color: white;" class="btn btn-link dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <span class="sr-only">Toggle Dropdown</span>
+                                  </button>
+                                <div class="dropdown-menu">
+                                    <a class="dropdown-item" href="#">Reservations</a>
+                                    <a class="dropdown-item" href="#">Account Settings</a>
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item" href="#" style="color: red;"><i class="fa fa-right-from-bracket"></i> <button type="submit" name="btnLogout" style="background: transparent; outline: none; border:none; color: red; cursor: pointer;">Logout</button></a>
+                                </div>
+                            </div>
+                        </li>
+                </form>
                 </ul>
-                <nav>
+            </nav>
         </div>
     </header>
     <div class="content">

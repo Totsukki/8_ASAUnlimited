@@ -115,20 +115,23 @@ class RoomInfoLogged(View):
 		
 class MySearchResultsView(View):
 	def get(self, request):
-		timeslot = request.GET['timeslot']
-		rmtype = request.GET['rmtype']
-		sched = request.GET['sched']
-		prc = request.GET['prc']
-		# temp = Room.objects.raw("select * from tblRoom right join tblReserve on tblReserve.rmid_id = tblRoom.rmid where tblReserve.tmslt='%s' AND tblRoom.rmtype='%s' AND tblReserve.resdate='%s' AND tblRoom.prc>=%s", [timeslot, rmtype, sched, prc])
-		temps = Room.objects.raw("SELECT * FROM tblRoom WHERE rmid IN(select * FROM ( SELECT rmid FROM tblRoom UNION ALL SELECT rmid_id FROM tblReserve WHERE tblReserve.tmslt=%s  AND tblReserve.resdate=%s)tbl GROUP BY rmid HAVING count(*) = 1 ORDER BY rmid)AND tblRoom.prc>=%s AND tblRoom.rmtype=%s", [timeslot, sched, prc, rmtype])
-		rooms = Room.objects.raw("SELECT *, COUNT(tblReserve.rmid_id) as 'count' FROM `tblReserve` RIGHT JOIN tblRoom on tblReserve.rmid_id = tblRoom.rmid group by rmid order by 'count' desc limit 6")
-		rooms_all = Room.objects.all();
-		context = {
-			'rooms' : rooms,
-			'rooms_all' : rooms_all,
-			'temps' : temps
-		}
-		return render(request, 'index-searchresult.html', context)
+		try:
+			timeslot = request.GET['timeslot']
+			rmtype = request.GET['rmtype']
+			sched = request.GET['sched']
+			prc = request.GET['prc']
+			# temp = Room.objects.raw("select * from tblRoom right join tblReserve on tblReserve.rmid_id = tblRoom.rmid where tblReserve.tmslt='%s' AND tblRoom.rmtype='%s' AND tblReserve.resdate='%s' AND tblRoom.prc>=%s", [timeslot, rmtype, sched, prc])
+			temps = Room.objects.raw("SELECT * FROM tblRoom WHERE rmid IN(select * FROM ( SELECT rmid FROM tblRoom UNION ALL SELECT rmid_id FROM tblReserve WHERE tblReserve.tmslt=%s  AND tblReserve.resdate=%s)tbl GROUP BY rmid HAVING count(*) = 1 ORDER BY rmid)AND tblRoom.prc>=%s AND tblRoom.rmtype=%s", [timeslot, sched, prc, rmtype])
+			rooms = Room.objects.raw("SELECT *, COUNT(tblReserve.rmid_id) as 'count' FROM `tblReserve` RIGHT JOIN tblRoom on tblReserve.rmid_id = tblRoom.rmid group by rmid order by 'count' desc limit 6")
+			rooms_all = Room.objects.all();
+			context = {
+				'rooms' : rooms,
+				'rooms_all' : rooms_all,
+				'temps' : temps
+			}
+			return render(request, 'index-searchresult.html', context)
+		except:
+			return redirect("my_index_view")
      
 	def post(self, request):
 		if request.method == 'POST':
@@ -171,6 +174,8 @@ class MyIndexLogged_SearchResultsView(View):
 		except KeyError:
 			pass
 			return redirect('my_searchresults_view')
+		# except:
+		# 	return redirect('my_indexlogged_view')
 
 	def post(self, request):
 		form = ReserveForm(request.POST)		
@@ -194,10 +199,12 @@ class MyIndexLogged_SearchResultsView(View):
 			elif 'btnReserve' in request.POST:
 				rmid = request.POST.get("rmid")
 				uid = request.POST.get("uid")
-				date = request.POST.get("date")
+				sched = request.POST.get("sched")
+				schedstr = datetime.strptime(sched, "%m-%d-%Y").date() #string to 'date' datatype
+				schedformat = schedstr.strftime("%Y-%m-%d") #schedstr format
 				tmslt = request.POST.get("tmslt")
-
-				form = Reserve(date = date, tmslt = tmslt, 
+				
+				form = Reserve(resdate = schedformat, tmslt = tmslt, 
 							uid_id = uid, rmid_id = rmid)
 				form.save()
 				return redirect('my_indexlogged_view')
@@ -289,7 +296,7 @@ class MyAdminDashboardView(View):
 			mon = request.POST['month']
 			wk = request.POST['week']
 			day = request.POST['day']
-			return redirect('/admin_dashboard?month=' + mon + '&week=' + wk + "&day=" + day)
+			return redirect('/dashboard?month=' + mon + '&week=' + wk + "&day=" + day)
 
 		# if ((request.POST['month'] and request.POST['day'] and request.POST['week']) != ''):
 		# elif (mon != '' and wk == '' and day == ''):

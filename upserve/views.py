@@ -148,7 +148,7 @@ class MyIndexLogged_Reservations(View):
 	def get(self, request):
 		logged = Users.objects.get(uid = request.session['uid'])
 		urev = Room.objects.raw("SELECT a.*, b.* FROM tblRoom a inner join tblReserve b on a.rmid = b.rmid_id where b.uid_id=%s and pending=TRUE limit 1", [request.session['uid']])
-		ureserve = Reserve.objects.raw("SELECT a.*, b.rmname, b.prc, b.rmimg FROM `tblreserve` a inner join tblroom b on a.rmid_id = b.rmid where a.uid_id=%s order by resmadedate desc", [request.session['uid']])
+		ureserve = Reserve.objects.raw("SELECT a.*, b.rmname, b.prc, b.rmimg FROM tblReserve a inner join tblRoom b on a.rmid_id = b.rmid where a.uid_id=%s order by resmadedate desc", [request.session['uid']])
 		
 		context = {
 			'logged' : logged,

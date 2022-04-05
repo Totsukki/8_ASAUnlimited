@@ -18,7 +18,7 @@
     <header id="mydiv">
         <div class="container" id="container">
             <!-- <p class="logo"><a href="#" style="color: #fff; line-height:50px;"><b style="font-size:60px">ASA</b><br>Unlimited</a> -->
-            <a href="index">
+            <a href="../home">
                 <img class="logo" style="cursor: pointer;" src="{% static 'assets/images/ASA Unlimited-logos/ASA Unlimited-logos_white.png' %}" alt="ASA Unlimited">
             </a>
             <nav>
@@ -26,9 +26,9 @@
                     {% csrf_token %}
                     <ul>
                         <li><a class="nav-links" href="#">Home</a></li>
-                        <li><a class="nav-links" href="index_logged#about">About</a></li>
-                        <li><a class="nav-links" href="index_logged#about-team">Team</a></li>
-                        <li><a class="nav-links" href="index_logged#contact-us">Contact Us</a></li>
+                        <li><a class="nav-links" href="home#about">About</a></li>
+                        <li><a class="nav-links" href="home#about-team">Team</a></li>
+                        <li><a class="nav-links" href="home#contact-us">Contact Us</a></li>
                         <li>
                             <div class="btn-group">
                                 <button class="logout nav-links btn btn-link" style="font-size: 1.3em; color: white; text-decoration: none;" type="button">{{ logged.fname }}</button>
@@ -36,8 +36,8 @@
                                     <span class="sr-only">Toggle Dropdown</span>
                                   </button>
                                 <div class="dropdown-menu">
-                                    <a class="dropdown-item" href="#">Reservations</a>
-                                    <a class="dropdown-item" href="#">Account Settings</a>
+                                    <a class="dropdown-item" href="home/reservations">Reservations</a>
+                                    <a class="dropdown-item" href="home/accountsettings">Account Settings</a>
                                     <div class="dropdown-divider"></div>
                                     <a class="dropdown-item" href="#" style="color: red;"><i class="fa fa-right-from-bracket"></i> <button type="submit" name="btnLogout" style="background: transparent; outline: none; border:none; color: red; cursor: pointer;">Logout</button></a>
                                 </div>
@@ -169,6 +169,7 @@
                     <h2><b>Daryl Aldemeta</b></h2>
                     <i>Front-End Developer</i>
                     <hr>
+                    <a href="https://www.facebook.com/daryl.chavezaldemeta" target="_blank"><img class="at-icon" src="https://img.icons8.com/ios-filled/452/facebook-new.png" alt=""></a>
                 </div>
                 <div class="rounded-circle text-center col-sm">
                     <img class="rounded-circle w-75" src="{% static 'assets/images/team/team-1.jpg' %}" alt="">
@@ -176,6 +177,7 @@
                     <h2><b>Gemarlo Aquillo</b></h2>
                     <i>Project Manager</i>
                     <hr>
+                    <a href="https://www.facebook.com/gemarloaquillo/" target="_blank"><img class="at-icon" src="https://img.icons8.com/ios-filled/452/facebook-new.png" alt=""></a>
                 </div>
                 <div class="rounded-circle text-center col-sm">
                     <img class="rounded-circle w-75" src="{% static 'assets/images/team/team-2.jpg' %}" alt="">
@@ -183,32 +185,32 @@
                     <h2><b>Sean Saligue</b></h2>
                     <i>Back-End Developer</i>
                     <hr>
+                    <a href="https://www.facebook.com/seanmavericksaligue" target="_blank"><img class="at-icon" src="https://img.icons8.com/ios-filled/452/facebook-new.png" alt=""></a>
                 </div>
             </div>
             <p id="contact-us"></p>
         </div>
-        <p id="contact-us"></p>
-    </div>
-    <summary class="text-center">
-        <div class="contact-us">
-            <div class="row">
-                <div class="col-sm">
-                    <img class="w-50" src="{% static 'assets/images/video-call.png' %}" alt="">
-                </div>
-                <div class="col- text-left">
-                    <h1 style="margin-left: -30%;"><b>Contact Details</b></h1>
-                    <br>
-                    <p style="margin-left: -30%;">
-                        Telephone Number: <b>+63 569 6942</b> <br> Or email us your concerns: <b>asa-unlimited@hotmail.com</b> <br>Alternatively, post your concerns in the textbox below:
-                    </p>
+        <summary>
+            <div class="contact-us container text-center">
+                <div class="row text-center">
+                    <div class="col">
+                        <img class="w-100 mr-5" src="{% static 'assets/images/video-call.png' %}" alt="">
+                    </div>
+                    <div class="col text-left">
+                        <h1><b>Contact Details</b></h1>
+                        <br>
+                        <p>
+                            Telephone Number: <b>+63 569 6942</b> <br> Or email us your concerns: <b>asa-unlimited@hotmail.com</b> <br>Alternatively, post your concerns in the textbox below:
+                        </p>
 
-                    <textarea class="message" name="message" cols="50" style="margin-left: -30%; height: 30%; border-radius: 5px;"></textarea>
-                    <button style="margin: 5% 0 0 40%;" class="btn btn-info">Submit</button>
-                </div>
+                        <textarea class="message" name="message" cols="50" style="height: 30%; border-radius: 5px;"></textarea>
+                        <button style="margin: 5% 0 0 82%;" class="btn btn-info">Submit</button>
+                    </div>
 
+                </div>
             </div>
-        </div>
-    </summary>
+        </summary>
+    </div>
     </div>
     <footer>
         <div>

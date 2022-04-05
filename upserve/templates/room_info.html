@@ -17,15 +17,15 @@
     <header style="position: absolute;">
         <div class="container">
             <!-- <p class="logo"><a href="#" style="color: #fff; line-height:50px;"><b style="font-size:60px">ASA</b><br>Unlimited</a> -->
-            <a href="index">
+            <a href="{% url 'my_index_view' %}">
                 <img class="logo" style="cursor: pointer;" src="{% static 'assets/images/ASA Unlimited-logos/ASA Unlimited-logos_white.png' %}" alt="ASA Unlimited">
             </a>
             <nav>
                 <ul>
-                    <li><a class="nav-links" href="index">Home</a></li>
-                    <li><a class="nav-links" href="index#about">About</a></li>
-                    <li><a class="nav-links" href="index#about-team">Team</a></li>
-                    <li><a class="nav-links" href="index#contact-us">Contact Us</a></li>
+                    <li><a class="nav-links" href="">Home</a></li>
+                    <li><a class="nav-links" href="{% url 'my_index_view' %}#about">About</a></li>
+                    <li><a class="nav-links" href="{% url 'my_index_view' %}#about-team">Team</a></li>
+                    <li><a class="nav-links" href="{% url 'my_index_view' %}#contact-us">Contact Us</a></li>
                     <li><a class="nav-links" href="login">Sign In</a></li>
                 </ul>
                 <nav>
@@ -34,7 +34,7 @@
     <div class="content">
         <div class="search-result-card bg-light w-75 mx-auto p-5" style="margin-bottom: 10px;">
             <div class="container-header">
-                <a href="index" class="back-icon fa fa-arrow-left"></a>
+                <a href="{% url 'my_index_view' %}" class="back-icon fa fa-arrow-left"></a>
                 <div class="room-title">
                     <h6>
                         {{room.rmnum}} | {{room.rmname}}

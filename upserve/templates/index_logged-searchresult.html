@@ -14,7 +14,7 @@
     <header id="mydiv">
         <div class="container" id="container">
             <!-- <p class="logo"><a href="#" style="color: #fff; line-height:50px;"><b style="font-size:60px">ASA</b><br>Unlimited</a> -->
-            <a href="index">
+            <a href="../home">
                 <img class="logo" style="cursor: pointer;" src="{% static 'assets/images/ASA Unlimited-logos/ASA Unlimited-logos_white.png' %}" alt="ASA Unlimited">
             </a>
             <nav>
@@ -22,18 +22,18 @@
                     {% csrf_token %}
                     <ul>
                         <li><a class="nav-links" href="#">Home</a></li>
-                        <li><a class="nav-links" href="index_logged#about">About</a></li>
-                        <li><a class="nav-links" href="index_logged#about-team">Team</a></li>
-                        <li><a class="nav-links" href="index_logged#contact-us">Contact Us</a></li>
+                        <li><a class="nav-links" href="home#about">About</a></li>
+                        <li><a class="nav-links" href="home#about-team">Team</a></li>
+                        <li><a class="nav-links" href="home#contact-us">Contact Us</a></li>
                         <li>
                             <div class="btn-group">
                                 <button class="logout nav-links btn btn-link" style="font-size: 1.3em; color: white; text-decoration: none;" type="button">{{ logged.fname }}</button>
                                 <button type="button" style="color: white;" class="btn btn-link dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     <span class="sr-only">Toggle Dropdown</span>
                                   </button>
-                                <div class="dropdown-menu">
-                                    <a class="dropdown-item" href="#">Reservations</a>
-                                    <a class="dropdown-item" href="#">Account Settings</a>
+                                  <div class="dropdown-menu">
+                                    <a class="dropdown-item" href="../home/reservations">Reservations</a>
+                                    <a class="dropdown-item" href="../home/accountsettings">Account Settings</a>
                                     <div class="dropdown-divider"></div>
                                     <a class="dropdown-item" href="#" style="color: red;"><i class="fa fa-right-from-bracket"></i> <button type="submit" name="btnLogout" style="background: transparent; outline: none; border:none; color: red; cursor: pointer;">Logout</button></a>
                                 </div>

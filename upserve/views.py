@@ -63,7 +63,7 @@ class MyIndexLoggedView(View):
 				rmtype = request.POST['rmtype']
 				sched = request.POST['sched']
 				prc = request.POST['prc']
-				return redirect('/index_logged-searchresults?timeslot=' + timeslot + '&rmtype=' + rmtype + '&sched=' + sched + '&prc=' + prc)
+				return redirect('home/searchresults?timeslot=' + timeslot + '&rmtype=' + rmtype + '&sched=' + sched + '&prc=' + prc)
 			else:
 				room = Room.objects.get(rmid=request.POST['rmid'])
 				request.session['rmid'] = room.rmid
@@ -76,7 +76,6 @@ class RoomInfo(View):
 			'room' : room
 		}
 		return render(request, 'room_info.html', context)
-
 class RoomInfoLogged(View):
 	def get(self, request):
 		try:
@@ -109,10 +108,9 @@ class RoomInfoLogged(View):
 				tmslt = request.POST.get("tmslt")
 				
 				form = Reserve(resdate = schedformat, tmslt = tmslt, 
-							uid_id = uid, rmid_id = rmid)
+							uid_id = uid, rmid_id = rmid, pending=True)
 				form.save()
 				return redirect('my_indexlogged_view')
-		
 class MySearchResultsView(View):
 	def get(self, request):
 		try:
@@ -120,7 +118,6 @@ class MySearchResultsView(View):
 			rmtype = request.GET['rmtype']
 			sched = request.GET['sched']
 			prc = request.GET['prc']
-			# temp = Room.objects.raw("select * from tblRoom right join tblReserve on tblReserve.rmid_id = tblRoom.rmid where tblReserve.tmslt='%s' AND tblRoom.rmtype='%s' AND tblReserve.resdate='%s' AND tblRoom.prc>=%s", [timeslot, rmtype, sched, prc])
 			temps = Room.objects.raw("SELECT * FROM tblRoom WHERE rmid IN(select * FROM ( SELECT rmid FROM tblRoom UNION ALL SELECT rmid_id FROM tblReserve WHERE tblReserve.tmslt=%s  AND tblReserve.resdate=%s)tbl GROUP BY rmid HAVING count(*) = 1 ORDER BY rmid)AND tblRoom.prc>=%s AND tblRoom.rmtype=%s", [timeslot, sched, prc, rmtype])
 			rooms = Room.objects.raw("SELECT *, COUNT(tblReserve.rmid_id) as 'count' FROM `tblReserve` RIGHT JOIN tblRoom on tblReserve.rmid_id = tblRoom.rmid group by rmid order by 'count' desc limit 6")
 			rooms_all = Room.objects.all();
@@ -138,21 +135,54 @@ class MySearchResultsView(View):
 			if 'btnVisit' in request.POST:
 				room = Room.objects.get(rmid=request.POST['rmid'])
 				request.session['rmid'] = room.rmid
-				# print(request.session['rmid'])
 				return redirect('room_info')
 			elif 'btnSearch' in request.POST:
 				timeslot = request.POST.get('options', False)
 				rmtype = request.POST.get('rmtype', False)
 				sched = request.POST.get('sched', False)
 				prc = request.POST.get('prc', False)
-    
-				# print("timeslot:", timeslot, "room type:" + rmtype, "sched:", sched, "prc:", prc)
-				# p = Room.objects.raw("select * from tblRoom where rmtype=%s and sched=%s and tmslt=%s and prc=%s",[rmtype] )
-				# temp = Room.objects.raw("select * from tblRoom right join tblReserve on tblReserve.rmid_id = tblRoom.rmid where tblReserve.tmslt='%s' AND tblRoom.rmtype='%s' AND tblReserve.resdate='%s' AND tblRoom.prc>=%s", timeslot, rmtype, sched, prc)
 				return redirect('/searchresults?timeslot=' + timeslot + '&rmtype=' + rmtype + '&sched=' + sched + '&prc=' + prc)
 			else:
 				return redirect('my_index_view')
+class MyIndexLogged_Reservations(View):
+	def get(self, request):
+		logged = Users.objects.get(uid = request.session['uid'])
+		urev = Room.objects.raw("SELECT a.*, b.* FROM tblRoom a inner join tblReserve b on a.rmid = b.rmid_id where b.uid_id=%s and pending=TRUE limit 1", [request.session['uid']])
+		ureserve = Reserve.objects.raw("SELECT a.*, b.rmname, b.prc, b.rmimg FROM `tblreserve` a inner join tblroom b on a.rmid_id = b.rmid where a.uid_id=%s order by resmadedate desc", [request.session['uid']])
+		
+		context = {
+			'logged' : logged,
+			'urev' : urev,
+			'ureserve' : ureserve
+		}
+		return render(request, 'index_logged-reservations.html', context)
+	def post(self, request):
+		form = ReserveForm(request.POST)		
+		if request.method == 'POST':
+			if 'btnLogout' in request.POST:
+				try:
+					request.session.flush()
+				except KeyError:
+					pass
+				return redirect('my_index_view')
 
+
+class MyIndexLogged_AccountSettings(View):
+	def get(self, request):
+		logged = Users.objects.get(uid = request.session['uid'])
+		context = {
+			'logged' : logged
+		}
+		return render(request, 'index_logged-account-settings.html', context)
+	def post(self, request):
+			form = ReserveForm(request.POST)		
+			if request.method == 'POST':
+				if 'btnLogout' in request.POST:
+					try:
+						request.session.flush()
+					except KeyError:
+						pass
+					return redirect('my_index_view')
 class MyIndexLogged_SearchResultsView(View):
 	def get(self, request):
 		try:
@@ -195,7 +225,7 @@ class MyIndexLogged_SearchResultsView(View):
 				# print("timeslot:", timeslot, "room type:" + rmtype, "sched:", sched, "prc:", prc)
 				# p = Room.objects.raw("select * from tblRoom where rmtype=%s and sched=%s and tmslt=%s and prc=%s",[rmtype] )
 				# temp = Room.objects.raw("select * from tblRoom right join tblReserve on tblReserve.rmid_id = tblRoom.rmid where tblReserve.tmslt='%s' AND tblRoom.rmtype='%s' AND tblReserve.resdate='%s' AND tblRoom.prc>=%s", timeslot, rmtype, sched, prc)
-				return redirect('/index_logged-searchresults?timeslot=' + timeslot + '&rmtype=' + rmtype + '&sched=' + sched + '&prc=' + prc)
+				return redirect('/searchresults?timeslot=' + timeslot + '&rmtype=' + rmtype + '&sched=' + sched + '&prc=' + prc)
 			elif 'btnReserve' in request.POST:
 				rmid = request.POST.get("rmid")
 				uid = request.POST.get("uid")
@@ -205,7 +235,7 @@ class MyIndexLogged_SearchResultsView(View):
 				tmslt = request.POST.get("tmslt")
 				
 				form = Reserve(resdate = schedformat, tmslt = tmslt, 
-							uid_id = uid, rmid_id = rmid)
+							uid_id = uid, rmid_id = rmid, pending=True)
 				form.save()
 				return redirect('my_indexlogged_view')
 			elif 'btnVisit' in request.POST:
@@ -297,10 +327,6 @@ class MyAdminDashboardView(View):
 			wk = request.POST['week']
 			day = request.POST['day']
 			return redirect('/dashboard?month=' + mon + '&week=' + wk + "&day=" + day)
-
-		# if ((request.POST['month'] and request.POST['day'] and request.POST['week']) != ''):
-		# elif (mon != '' and wk == '' and day == ''):
-		# 	return redirect('/admin_dashboard?month=' + mon)
 			
 class MyUsersView(View):
 	def get(self, request):
@@ -381,8 +407,7 @@ class MyReservationsView(View):
 				schedstr = datetime.strptime(sched, "%m-%d-%Y").date() #string to 'date' datatype
 				schedformat = schedstr.strftime("%Y-%m-%d") #schedstr format
 				tmslt = request.POST.get("tmslt")
-
-				form = Reserve(rmid_id=rmid,uid_id=uid,resdate=schedformat,tmslt=tmslt)
+				form = Reserve(rmid_id=rmid,uid_id=uid,resdate=schedformat,tmslt=tmslt, pending=True)
 				form.save()
 				return redirect('my_reservations_view')
 
@@ -466,24 +491,6 @@ class MyLoginView(View):
 		messages.error(request, 'User does not exist')
 		return redirect('my_login_view') 
 				
-	# def post(self, request):
-	# 	# form = UsersForm(request.POST)
-	# 	if request.method == 'POST':
-	# 		if request.POST['email'] == "admin@asaunlimited.com" and request.POST['pword'] == "admin":
-	# 			return redirect('my_admindashboard_view')
-	# 		user = Users.objects.get(email=request.POST['email'])	
-	# 		if user.pword == request.POST['pword']:
-	# 			request.session['uid'] = user.uid
-	# 			print(request.session['uid'])
-	# 			return redirect('my_indexlogged_view')
-			
-	# 		elif user.pword != request.POST['pword']:
-	# 			messages.error(request, 'Email or password is incorrect.')
-	# 			return redirect('my_login_view')
-	# 		else:
-	# 			messages.error(request, 'User does not exist')
-	# 			return redirect('my_login_view') 
-
 class MySignUpView(View):
 	def get(self, request):
 		users = Users.objects.all()
@@ -507,7 +514,7 @@ class MySignUpView(View):
 							pword = pword, email = email, add = add, 
 							mobile = mobile)
 				form.save()
-				user = Users.objects.get(fname=request.POST['fname'])
+				user = Users.objects.get(email=request.POST.get("email"))
 				request.session['uid'] = user.uid;
 				return redirect('my_indexlogged_view')
 					

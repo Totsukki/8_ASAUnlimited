@@ -40,8 +40,7 @@ summary:hover {
 footer {
     background: #4e4b61;
     text-align: center;
-    margin-bottom: -10%;
-    padding: 2% 0 0 0;
+    padding: 2% 0;
 }
 
 footer div {
@@ -180,6 +179,7 @@ select {
     color: #777;
     border-radius: 3px 0 0 3px;
     text-decoration: none;
+    cursor: pointer;
 }
 
 .dropdown-toggle::after {
@@ -282,12 +282,52 @@ input[type="text"].datepicker {
     background: #c7c1b2;
 }
 
+.about-team>div>div>img:hover {
+    animation-name: animate;
+    animation-duration: .5s;
+    animation-fill-mode: forwards;
+}
+
+.about-team>div>div>img {
+    animation-name: reverse;
+    animation-duration: 1s;
+}
+
+.at-icon {
+    width: 30px;
+}
+
+.at-icon:hover {
+    opacity: .5;
+}
+
 .about-team {
     padding: 2% 15% 5% 15%;
 }
 
+@keyframes animate {
+    from {
+        -webkit-filter: brightness(100%);
+    }
+    to {
+        -webkit-filter: brightness(70%);
+        box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px;
+    }
+}
+
+@keyframes reverse {
+    from {
+        -webkit-filter: brightness(70%);
+        box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px;
+    }
+    to {
+        -webkit-filter: brightness(100%);
+    }
+}
+
 .contact-us {
     padding: 2% 15% 5% 2%;
+    margin-left: 280px;
 }
 
 .search-result {
@@ -301,21 +341,19 @@ input[type="text"].datepicker {
 
 .search-result-card {
     position: relative;
-    display: -webkit-box;
-    display: -ms-flexbox;
     display: flex;
     -webkit-box-orient: vertical;
     -webkit-box-direction: normal;
-    -ms-flex-direction: column;
     flex-direction: column;
     min-width: 0;
     word-wrap: break-word;
-    background-color: #fff;
     background-clip: border-box;
     border: 1px solid rgba(0, 0, 0, .125);
     border-radius: 2rem;
-    padding: 20px;
-    margin-bottom: 3%;
+    padding: 1rem;
+    background-color: white;
+    margin-bottom: 1rem;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
 }
 
 .search-result-text {
@@ -335,8 +373,21 @@ input[type="text"].datepicker {
     flex-grow: 0;
 }
 
+.col-text-style {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    max-width: 180px;
+    width: 160px;
+}
+
 img.search-result-img {
     width: 13em;
+    border-radius: 1rem;
+}
+
+img.pnd-res-img {
+    width: 30em;
     border-radius: 1rem;
 }
 

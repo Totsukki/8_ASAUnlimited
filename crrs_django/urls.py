@@ -16,17 +16,21 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from upserve import views
+from django.views.generic.base import RedirectView
 
 app_name = 'upserve'
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('index', views.MyIndexView.as_view(), name="my_index_view"),
+    # path('', RedirectView.as_view(url='/index')),
+    path('', views.MyIndexView.as_view(), name="my_index_view"),
     path('searchresults', views.MySearchResultsView.as_view(), name="my_searchresults_view"),
-    path('index_logged', views.MyIndexLoggedView.as_view(), name="my_indexlogged_view"),
+    path('home', views.MyIndexLoggedView.as_view(), name="my_indexlogged_view"),
     path('room_info', views.RoomInfo.as_view(), name="room_info"),
-    path('room_info_logged', views.RoomInfoLogged.as_view(), name="room_info_logged"),
-    path('index_logged-searchresults', views.MyIndexLogged_SearchResultsView.as_view(), name="my_indexlogged-searchresults_view"),
+    path('home/room_info', views.RoomInfoLogged.as_view(), name="room_info_logged"),
+    path('home/searchresults', views.MyIndexLogged_SearchResultsView.as_view(), name="my_indexlogged-searchresults_view"),
+    path('home/accountsettings', views.MyIndexLogged_AccountSettings.as_view(), name="my_indexlogged-accountsettings_view"),
+    path('home/reservations', views.MyIndexLogged_Reservations.as_view(), name="my_indexlogged-reservations_view"),
     path('login', views.MyLoginView.as_view(), name="my_login_view"),
     path('signup', views.MySignUpView.as_view(), name="my_signup_view"),
     path('dashboard', views.MyAdminDashboardView.as_view(), name="my_admindashboard_view"),

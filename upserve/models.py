@@ -1,13 +1,16 @@
+from email.policy import default
 from django.db import models
+import datetime
 
 class Users(models.Model):
     uid = models.AutoField(primary_key=True)
     fname = models.CharField(max_length=25)
     lname = models.CharField(max_length=25)
-    pword = models.CharField(max_length=30)
+    pword = models.CharField(max_length=300)
     email = models.CharField(max_length=50, unique=True)
     add = models.CharField(max_length=100)
     mobile = models.CharField(max_length=13)
+    # isVerified = models.BooleanField(default=True)
 
     class Meta:
         db_table = 'tblUsers'
@@ -40,6 +43,7 @@ class Reserve(models.Model):
     uid = models.ForeignKey(Users, on_delete=models.CASCADE)
     resdate = models.DateField(blank=True, null=True)
     tmslt = models.CharField(max_length=40)
-
+    resmadedate = models.DateTimeField(auto_now_add=True, editable=False, null=False, blank=False)
+    pending = models.BooleanField(default=False)
     class Meta:
         db_table = 'tblReserve'

@@ -183,7 +183,8 @@ class MyIndexLogged_AccountSettings(View):
 	def get(self, request):
 		try:
 			error = request.GET.get('err', False)
-			if(error==1):
+			if(error == '1'):
+				print(error)
 				messages.error(request, 'Password is incorrect.')
 			request.session['conf'] = 0
 			logged = Users.objects.get(uid = request.session['uid'])

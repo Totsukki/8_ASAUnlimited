@@ -2,6 +2,8 @@
 <html>
 
 <head>
+    <title>ASA Unlimited | Home</title>
+    <link rel="icon" href="{% static 'assets/images/ASA Unlimited-logos/favicon2.png' %}" type="image/png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@100;200;300;400;500;600;700&display=swap" rel="stylesheet">
@@ -48,22 +50,28 @@
             </nav>
         </div>
     </header>
-    <form class="searchForm" action="" method="POST">
-        {% csrf_token %}
-        <div type="button" class="main-search">
-            <div class="time-of-day">
-                <input type="radio" class="btn-check" name="options" id="morning" value="Morning" autocomplete="off" checked required>
-                <label class="btn btn-secondary" for="morning">Morning</label>
+    <div id="content-all container">
+        {% for msg in messages %}
+        <div class="rounded mx-auto success-msg">
+            <b style="color: rgb(0, 0, 0);">{{msg}}</b>
+        </div>
+        {% endfor %}
+        <form class="searchForm" action="" method="POST">
+            {% csrf_token %}
+            <div type="button" class="main-search">
+                <div class="time-of-day">
+                    <input type="radio" class="btn-check" name="options" id="morning" value="Morning" autocomplete="off" checked required>
+                    <label class="btn btn-secondary" for="morning">Morning</label>
 
-                <input type="radio" class="btn-check" name="options" id="afternoon" value="Afternoon" autocomplete="off">
-                <label class="btn btn-secondary" for="afternoon">Afternoon</label>
+                    <input type="radio" class="btn-check" name="options" id="afternoon" value="Afternoon" autocomplete="off">
+                    <label class="btn btn-secondary" for="afternoon">Afternoon</label>
 
-                <input type="radio" class="btn-check" name="options" id="evening" value="Evening" autocomplete="off">
-                <label class="btn btn-secondary" for="evening">Evening</label>
-            </div>
-            <div class="card search--box">
-                <div class="search-box">
-                    <span class="dropdown">
+                    <input type="radio" class="btn-check" name="options" id="evening" value="Evening" autocomplete="off">
+                    <label class="btn btn-secondary" for="evening">Evening</label>
+                </div>
+                <div class="card search--box">
+                    <div class="search-box">
+                        <span class="dropdown">
                         <label for="room-type">&nbsp;Room Type:</label>
                         <select class="picker custom-select-s" aria-labelledby="room-type" name="rmtype">
                             <option value="Standard">Standard</option>
@@ -71,12 +79,12 @@
                             <option value="Premium">Premium</option>
                         </select>
                     </span>
-                    <span class="dropdown">
+                        <span class="dropdown">
                         <label for="date-sched">&nbsp;Date:</label>
                         <input name="sched" id="datetimepicker" placeholder="--/--/----" class="picker" type="text" required onkeypress="return false" autocomplete='off'>
                         <i class="fa fa-calendar" style="cursor: pointer; margin-left: -30px; pointer-events: none;"></i> 
                     </span>
-                    <span class="dropdown">
+                        <span class="dropdown">
                         <label for="room-price">&nbsp;Price:</label>
                         <select class="picker room-price custom-select-m" name="prc" aria-labelledby="room-price">
                             <option value="3000">>3000</option>
@@ -84,15 +92,15 @@
                             <option value="100000">>10000</option>
                         </select>
                     </span>
-                    <span class="search">
+                        <span class="search">
                         <input type="text" class="rmname" name="rmname" placeholder="Type a room name" autocomplete="off">
                         <button class="btn btn-primary custom-btn" name="btnSearch">Search</button>
                     </span>
+                    </div>
                 </div>
             </div>
-        </div>
-    </form>
-    <div id="content-all">
+        </form>
+
         <div class="top-content">
             <h1 style="margin-left: 15.3%; margin-top: 20px"><b style="font-size: 50px">Popular</b></h1>
             <div class="container-fluid">
@@ -148,11 +156,9 @@
             <h1 style="margin-top: 20px"><b style="font-size: 60px">&nbsp;About<hr></b></h1>
             <div class="custom-card">
                 <p>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque at porttitor libero. Nam nec malesuada sem, sit amet cursus risus. In egestas eu ante id gravida. Donec semper justo facilisis nunc pharetra, mollis tristique enim commodo. Fusce molestie
-                    quam odio, et vehicula magna hendrerit et. Duis mollis iaculis eros ut tincidunt. Nullam accumsan leo enim, id posuere tellus vestibulum nec. Pellentesque auctor lorem vitae suscipit condimentum. Curabitur vehicula volutpat metus eu
-                    fermentum. Maecenas turpis massa, sodales a luctus ac, euismod ultrices urna. Donec lacinia, arcu et consectetur tristique, augue nisi vulputate ante, eget congue tortor urna non leo. Cras ultricies laoreet leo, eu porttitor est porttitor
-                    a. Cras ultricies eget tortor ut gravida. Nullam euismod in ex malesuada lacinia. Sed a euismod libero, a pellentesque orci. Nunc suscipit, velit sed vestibulum iaculis, magna massa scelerisque erat, in dictum tellus lectus vitae enim.
-                    Suspendisse felis lorem, tempor eget consectetur at, viverra non nisi. Vestibulum ultrices purus in tempor pulvinar. Donec posuere elit non efficitur aliquet.
+                    ASA Unlimited Conference Room Reservation is a company unmatched in the same conference room business platform. Our conference rooms boast breathable workspaces designed to invite inspiration. ASA Unlimited's conference rooms are equipped with air conditioners,
+                    full room services, and excellent brainstorming equipments to maximize team productivity.
+                    <br><br>ASA Unlimited is focused on customer satisfaction and service quality that is unlike any other.
                     <hr>
                 </p>
 

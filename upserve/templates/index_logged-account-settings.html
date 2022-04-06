@@ -2,16 +2,25 @@
 <html>
 
 <head>
+    <title>ASA Unlimited | Account Settings </title>
+    <link rel="icon" href="{% static 'assets/images/ASA Unlimited-logos/favicon2.png' %}" type="image/png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Sen&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link href="{% static 'assets/styles.css' %}" rel="stylesheet" type="text/css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer"/>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.14/jquery.datetimepicker.css" integrity="sha512-bYPO5jmStZ9WI2602V2zaivdAnbAhtfzmxnEGh9RwtlI00I9s8ulGe4oBa5XxiC6tCITJH/QG70jswBhbLkxPw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer"
+    />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.14/jquery.datetimepicker.css" integrity="sha512-bYPO5jmStZ9WI2602V2zaivdAnbAhtfzmxnEGh9RwtlI00I9s8ulGe4oBa5XxiC6tCITJH/QG70jswBhbLkxPw==" crossorigin="anonymous"
+        referrerpolicy="no-referrer" />
 </head>
-
+if
+{% if error %}
+<body onload="myFunction()">
+{% else %}
 <body>
+{% endif %}
+
     <header id="mydiv">
         <div class="container" id="container">
             <!-- <p class="logo"><a href="#" style="color: #fff; line-height:50px;"><b style="font-size:60px">ASA</b><br>Unlimited</a> -->
@@ -22,7 +31,7 @@
                 <form class="logoutForm" method="POST">
                     {% csrf_token %}
                     <ul>
-                        <li><a class="nav-links" href="#">Home</a></li>
+                        <li><a class="nav-links" href="../home">Home</a></li>
                         <li><a class="nav-links" href="../home#about">About</a></li>
                         <li><a class="nav-links" href="../home#about-team">Team</a></li>
                         <li><a class="nav-links" href="../home#contact-us">Contact Us</a></li>
@@ -32,7 +41,7 @@
                                 <button type="button" style="color: white;" class="btn btn-link dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     <span class="sr-only">Toggle Dropdown</span>
                                   </button>
-                                  <div class="dropdown-menu">
+                                <div class="dropdown-menu">
                                     <a class="dropdown-item" href="../home/reservations">Reservations</a>
                                     <a class="dropdown-item" href="../home/accountsettings">Account Settings</a>
                                     <div class="dropdown-divider"></div>
@@ -45,112 +54,74 @@
             </nav>
         </div>
     </header>
-    <div class="content">
-        <div class="search-result-card bg-light w-75 mx-auto p-5" style="margin-bottom: 10px;">
-            <div class="container-header">
-                <a href="../home" class="back-icon fa fa-arrow-left"></a>
-                <div class="room-title">
-                    <h6>
-                        {{room.rmnum}} | {{room.rmname}}
-                    </h6>
-                </div>
-            </div>
-
-            <div class="container-fluid">
-                <div class="row w-100">
-                    <div class="col" style="margin-left: 10px">
-                        <img src="{% static room.rmimg %}" width="470px">
-                    </div>
-                    <div class="col" style="display: flex">
-                        <div class="row">
-                            <div class="col">
-                                <img src="{% static room.rmimg }} %}" width="235px">
-                                <img src="{% static room.rmimg }} %}" width="235px">
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col">
-                                <img src="{% static room.rmimg }} %}" width="235px">
-                                <img src="{% static room.rmimg }} %}" width="235px">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="room-prc subcontent">
-                <b>₱{{room.prc}}</b>
-            </div>
-            <div class="room-cap subcontent">
-                <span><h4 style="display: inline; margin-right: 30px;">Capacity:</h4>
-                    <i class="fa fa-user" style="font-size: 1.5em;"></i> <b style="font-size: 1.5em;" >{{room.cap}}</b></span>
-            </div>
-            <div class="room-desc">
-                <p>
-                    Excepteur incididunt ea laboris pariatur esse eiusmod proident laboris tempor eu aliquip exercitation. Exercitation sint ullamco irure cupidatat proident et duis ea mollit amet ea culpa ad reprehenderit. Nulla elit ut ex ad Lorem Lorem nisi sunt reprehenderit
-                    officia nostrud sit ipsum. Culpa tempor esse nulla sunt sit dolore fugiat aute nostrud nisi irure et incididunt nulla. Commodo ipsum aliquip eu labore ut duis et duis velit pariatur ullamco. Reprehenderit elit sunt anim quis. Reprehenderit
-                    duis nulla laborum eu. Duis amet velit consectetur anim sint. Tempor sunt labore eu irure ullamco voluptate eiusmod excepteur ut nostrud dolore consequat dolore. Ea officia reprehenderit ullamco in. Adipisicing do sunt labore anim
-                    esse minim enim culpa. Laboris mollit tempor ipsum ex. Ut consequat aliquip magna commodo fugiat fugiat. Consequat et dolor duis mollit ipsum. Sit magna proident officia in dolore ex exercitation fugiat sit laboris et cillum cupidatat.
-                </p>
-            </div>
-            <div class="d-inline">
-                <button class="btn btn-info float-right" id="book-now" data-toggle="modal" data-target="#newModal-{{room.rmid}}" name="btnBookNow">Book Now</button></h4>
+    <div class="content" style="margin-top: 67px;">
+        <div class="search-result-card bg-light w-75 mx-auto mb-lg-4">
+            <div class="container-header pr-1 pl-1" style="margin-bottom: -20px;">
+                <a href="../home" class="back-icon" style="margin-top: -8px"><i class="fa fa-arrow-left" style="font-size: 30px;"></i></a>
+                <h1 style="margin: -20px 0 0 50px;"><b style="font-size: .8em;">Account Settings</b></h1>
             </div>
         </div>
-    </div>
+        <div class="search-result-card bg-light w-75 mx-auto p-5 mb-lg-4">
+            <h1 class="mb-4"><b>Account Details</b></h1>
+            <div class="form-group">
+                <label for="exampleInputEmail1">First Name</label>
+                <input type="email" class="w-50 form-control" id="exampleInputEmail1" placeholder="ex. John" disabled value="{{logged.fname}}">
+            </div>
+            <div class="form-group">
+                <label for="exampleInputEmail1">Last Name</label>
+                <input type="email" class="w-50 form-control" id="exampleInputEmail1" placeholder="ex. Doe" disabled value="{{logged.lname}}">
+            </div>
+            <div class="form-group">
+                <label for="exampleInputEmail1">Email address</label>
+                <input type="email" class="w-50 form-control" id="exampleInputEmail1" placeholder="ex. johndoe@gmail.com" disabled value="{{logged.email}}">
+            </div>
+            <div class="form-group">
+                <label for="exampleInputEmail1">Address</label>
+                <input type="email" class="w-50 form-control" id="exampleInputEmail1" placeholder="ex. Metro Polis, Philippines" disabled value="{{logged.add}}">
+            </div>
+            <div class="form-group">
+                <label for="exampleInputEmail1">Mobile Number</label>
+                <input type="email" class="w-50 form-control" id="exampleInputEmail1" placeholder="ex. 09420696969" disabled value="{{logged.mobile}}">
+            </div>
 
-    <!-- MODAL Book Now-->
-    <div class="modal fade" id="newModal-{{room.rmid}}" tabindex="-1" role="dialog" aria-labelledby="newModalLabel" aria-hidden="true" style='background-color: rgba(0,0,0,0.5); '>
-        <div style="margin-top: 10%;" class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-                <div>
-                    <h3 class="modal-title" style="color:#212529;">Reservation Summary <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="color: #212529;">
-                        <span aria-hidden="true">&times;</span></h3>
-                        <hr>
-                    
-                </div>
-                
-            </button>
-                    <form id="ReservConfirmForm" method="post">
+            <button type="button" style="width: 10%" class="btn btn-primary" data-toggle="modal" data-target="#editAccount">Edit</button>
+        </div>
+        <div class="modal fade" id="editAccount" tabindex="-1" role="dialog" aria-labelledby="newModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg" style="max-width: 400px;" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3 class="modal-title">Edit Confirm</h3>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <h1 class="mt-4 mx-auto">{{logged.fname}} {{logged.lname}}</h1>
+                    <small class="mx-auto">Enter password to edit account info</small>
+                    <form method="POST">
                         {% csrf_token %}
-                        <input type="text" name="rmid" value="{{ room.rmid }}" hidden>
-                        <input type="text" name="uid" value="{{ logged.uid }}" hidden>
-                        <div class="modal-body">
-                            <div class="row">
-                                <div class="col-4" id="startup-tab-1">
-                                    <img class="search-result-img" style="margin-top: -15px;" src="{% static room.rmimg %}">
-                                </div>
-                                <div class="col" id="startup-tab-1">
-                                    <h1 style="margin-top: -15px;">{{room.rmname}}</h1>
-                                    <h4 class="price" style="color: #5D9F5C; font-size: 3em; margin-top: -15px;"><b>₱{{room.prc}}</b></h4>
-                                    <h6 style="margin-top: -2%;">Capacity: <i class="fa fa-user"></i><b> {{room.cap}}</b><h6>
-                                    <div class="dropdown reserv-summary">
-                                        <label for="room-type">&nbsp;Timeslot:</label>
-                                        <select name="tmslt" class="picker custom-select-m" aria-labelledby="room-type">
-                                            <option value="Morning" selected>Morning</option>
-                                            <option value="Afternoon">Afternoon</option>
-                                            <option value="Evening">Evening</option>
-                                        </select>
-                                    </div>
-                                    <div class="dropdown reserv-summary">
-                                        <label for="date-sched">&nbsp;Date: </label>
-                                        <input name="sched" id="datetimepicker" placeholder="--/--/----" class="datepicker" type="text" width="10%" required onkeypress="return false" autocomplete='off'>
-                                        <i class="fa fa-calendar" style="cursor: pointer; pointer-events: none;"></i>                        
-                                    </div>
-                                    <h6 style="margin-top: -2%;">Room Type: <b> {{room.rmtype}}</b><h6>
-                                </div>
+                        <div class="container w-100 mt-2">
+                            <div class="form-group">
+                                <label for="exampleInputEmail1">Email address</label>
+                                <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email" disabled value="{{logged.email}}">
                             </div>
-                            
-                        </div>
-                        
-                        <div class="modal-footer">
-                            <button type="submit" id="btnReserve" name="btnReserve" class="btn btn-primary" style="border-radius: 5px; border-width: 0px; padding: 10px 50px; margin-right: -3%;" required>Confirm</button>
+                            <div class="form-group">
+                                <label for="exampleInputPassword1">Password</label>
+                                <input type="password" name="pword" class="form-control" id="exampleInputPassword1">
+                            </div>
+                            {% for msg in messages %}
+                            <div class="error-msg">
+                                {{msg}}
+                            </div>
+                            {% endfor %}
+                            <button type="submit" name="btnConfirm" class="btn btn-primary">Submit</button>
                         </div>
                     </form>
+
                 </div>
             </div>
         </div>
     </div>
+
     <footer>
         <div>
             Follow us on our social media for daily updates!<br>
@@ -170,15 +141,19 @@
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.14/jquery.datetimepicker.full.min.js" integrity="sha512-KL5fDK2RZmIUFucgSH+KCPs93qUv1+Vflr731R9uh+hb82P9YcZM1nk4TWgOznWd+HuI2GtNaG5rLQwb+8xDNw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.14/jquery.datetimepicker.full.min.js" integrity="sha512-KL5fDK2RZmIUFucgSH+KCPs93qUv1+Vflr731R9uh+hb82P9YcZM1nk4TWgOznWd+HuI2GtNaG5rLQwb+8xDNw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script>
-        jQuery('#datetimepicker').datetimepicker(
-            {
-                timepicker: false,
-                format: 'm-d-Y',
-                minDate:'0',
-            }
-        );
+        function myFunction() {
+            $('#editAccount').modal('toggle');
+            // alert('hi!');
+        }
+    </script>
+    <script>
+        jQuery('#datetimepicker ').datetimepicker({
+            timepicker: false,
+            format: 'm-d-Y ',
+            minDate: '0 ',
+        });
     </script>
     <script>
         $('#carousel-example ').on('slide.bs.carousel ', function(e) {

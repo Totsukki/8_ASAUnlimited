@@ -30,6 +30,7 @@ urlpatterns = [
     path('home/room_info', views.RoomInfoLogged.as_view(), name="room_info_logged"),
     path('home/searchresults', views.MyIndexLogged_SearchResultsView.as_view(), name="my_indexlogged-searchresults_view"),
     path('home/accountsettings', views.MyIndexLogged_AccountSettings.as_view(), name="my_indexlogged-accountsettings_view"),
+    path('home/accountsettings/edit', views.MyIndexLogged_AccountEdit.as_view(), name="my_indexlogged-accountedit_view"),
     path('home/reservations', views.MyIndexLogged_Reservations.as_view(), name="my_indexlogged-reservations_view"),
     path('login', views.MyLoginView.as_view(), name="my_login_view"),
     path('signup', views.MySignUpView.as_view(), name="my_signup_view"),

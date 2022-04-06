@@ -361,6 +361,20 @@ input[type="text"].datepicker {
     float: left;
 }
 
+.error-msg {
+    background: rgb(255, 0, 0, 0.25);
+    padding: 2%;
+    margin: 10px 0;
+}
+
+.success-msg {
+    margin-top: 100px;
+    margin-bottom: -100px;
+    width: 70%;
+    background: rgb(119, 209, 119);
+    padding: 2%;
+}
+
 .search-result-button {
     float: right;
 }

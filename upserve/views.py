@@ -12,6 +12,7 @@ import calendar
 # Create your views here.
 class MyIndexView(View):
 	def get(self, request):
+		request.session['success'] = 0
 		rooms = Room.objects.raw("SELECT *, COUNT(tblReserve.rmid_id) as 'count' FROM `tblReserve` RIGHT JOIN tblRoom on tblReserve.rmid_id = tblRoom.rmid group by rmid order by 'count' desc limit 6")
 		rooms_all = Room.objects.all();
 		p = Room.objects.raw("select * from tblRoom where rmtype='Standard'")
@@ -37,19 +38,22 @@ class MyIndexView(View):
 
 class MyIndexLoggedView(View):
 	def get(self, request):
-		try:
-			logged = Users.objects.get(uid = request.session['uid'])
-			rooms = Room.objects.raw("SELECT *, COUNT(tblReserve.rmid_id) as 'count' FROM `tblReserve` RIGHT JOIN tblRoom on tblReserve.rmid_id = tblRoom.rmid group by rmid order by 'count' desc limit 6")
-			rooms_all = Room.objects.all();
-			context = {
-				'logged' : logged,
-				'rooms' : rooms,
-				'rooms_all' : rooms_all
-			}
-			return render(request, 'index_logged.html', context)
-		except KeyError:
-			pass
-			return redirect('my_index_view')
+		# try:
+		logged = Users.objects.get(uid = request.session['uid'])
+		rooms = Room.objects.raw("SELECT *, COUNT(tblReserve.rmid_id) as 'count' FROM `tblReserve` RIGHT JOIN tblRoom on tblReserve.rmid_id = tblRoom.rmid group by rmid order by 'count' desc limit 6")
+		rooms_all = Room.objects.all();
+		print(request.session['success'])
+		if(request.session['success']==1):
+			messages.error(request, 'Successfully booked a reservation!')
+		context = {
+			'logged' : logged,
+			'rooms' : rooms,
+			'rooms_all' : rooms_all
+		}
+		return render(request, 'index_logged.html', context)
+		# except KeyError:
+		# 	pass
+		# 	return redirect('my_indexlogged_v')
 	def post(self, request):		
 		if request.method == 'POST':
 			if 'btnLogout' in request.POST:
@@ -78,6 +82,7 @@ class RoomInfo(View):
 		return render(request, 'room_info.html', context)
 class RoomInfoLogged(View):
 	def get(self, request):
+		request.session['success'] = 0
 		try:
 			room = Room.objects.get(rmid = request.session['rmid'])
 			logged = Users.objects.get(uid = request.session['uid'])
@@ -110,6 +115,7 @@ class RoomInfoLogged(View):
 				form = Reserve(resdate = schedformat, tmslt = tmslt, 
 							uid_id = uid, rmid_id = rmid, pending=True)
 				form.save()
+				request.session['success'] = 1
 				return redirect('my_indexlogged_view')
 class MySearchResultsView(View):
 	def get(self, request):
@@ -169,13 +175,24 @@ class MyIndexLogged_Reservations(View):
 
 class MyIndexLogged_AccountSettings(View):
 	def get(self, request):
-		logged = Users.objects.get(uid = request.session['uid'])
-		context = {
-			'logged' : logged
-		}
-		return render(request, 'index_logged-account-settings.html', context)
-	def post(self, request):
-			form = ReserveForm(request.POST)		
+		try:
+			error = request.GET['err']
+			messages.error(request, 'Password is incorrect.')
+			request.session['conf'] = 0
+			logged = Users.objects.get(uid = request.session['uid'])
+			context = {
+				'logged' : logged,
+				'error' : error
+			}
+			return render(request, 'index_logged-account-settings.html', context)
+		except:
+			logged = Users.objects.get(uid = request.session['uid'])
+			request.session['conf'] = 0
+			context = {
+				'logged' : logged,
+			}
+			return render(request, 'index_logged-account-settings.html', context)
+	def post(self, request):	
 			if request.method == 'POST':
 				if 'btnLogout' in request.POST:
 					try:
@@ -183,8 +200,40 @@ class MyIndexLogged_AccountSettings(View):
 					except KeyError:
 						pass
 					return redirect('my_index_view')
+				elif 'btnConfirm' in request.POST:
+					conf = Users.objects.get(uid = request.session['uid'])
+					pword = request.POST['pword']
+					if(pword == conf.pword):
+						request.session['conf'] = 1
+						return redirect('my_indexlogged-accountedit_view')
+					else:
+						return redirect('/home/accountsettings?err=1')
+class MyIndexLogged_AccountEdit(View):
+	def get(self, request):
+		logged = Users.objects.get(uid = request.session['uid'])
+		context = {
+			'logged' : logged,
+		}
+		if(request.session['conf']==1):
+			return render(request, 'index_logged-account-edit.html', context)
+		else: 
+			return redirect('my_indexlogged-accountsettings_view')	
+	def post(self, request):
+			if request.POST:
+				if 'btnUpdate' in request.POST:
+					uid = request.session['uid']
+					fname = request.POST.get("fname")
+					lname = request.POST.get("lname")
+					email = request.POST.get("email")
+					pword = request.POST.get("pword")
+					add = request.POST.get("add")
+					mobile = request.POST.get("mobile")
+					Users.objects.filter(uid=uid).update(fname=fname,lname=lname,pword=pword,email=email,add=add,mobile=mobile)
+					return redirect('my_indexlogged-accountsettings_view')
+      
 class MyIndexLogged_SearchResultsView(View):
 	def get(self, request):
+		request.session['success'] = 0
 		try:
 			timeslot = request.GET['timeslot']
 			rmtype = request.GET['rmtype']
@@ -204,8 +253,6 @@ class MyIndexLogged_SearchResultsView(View):
 		except KeyError:
 			pass
 			return redirect('my_searchresults_view')
-		# except:
-		# 	return redirect('my_indexlogged_view')
 
 	def post(self, request):
 		form = ReserveForm(request.POST)		
@@ -237,6 +284,7 @@ class MyIndexLogged_SearchResultsView(View):
 				form = Reserve(resdate = schedformat, tmslt = tmslt, 
 							uid_id = uid, rmid_id = rmid, pending=True)
 				form.save()
+				request.session['success'] = 1
 				return redirect('my_indexlogged_view')
 			elif 'btnVisit' in request.POST:
 				room = Room.objects.get(rmid=request.POST['rmid'])

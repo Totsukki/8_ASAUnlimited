@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>ASA Unlimited | Reservations</title>
+    <title>ASA Unlimited | Account Settings </title>
     <link rel="icon" href="{% static 'assets/images/ASA Unlimited-logos/favicon2.png' %}" type="image/png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -52,91 +52,68 @@
     <div class="content">
         <div class="search-result-card bg-light w-75 mx-auto mb-lg-4">
             <div class="container-header pr-1 pl-1" style="margin-bottom: -20px;">
-                <a href="../home" class="back-icon" style="margin-top: -8px"><i class="fa fa-arrow-left" style="font-size: 30px;"></i></a>
-                <h1 style="margin: -20px 0 0 50px;"><b style="font-size: .8em;">Reservations</b></h1>
+                <a href="../accountsettings" class="back-icon" style="margin-top: -8px"><i class="fa fa-arrow-left" style="font-size: 30px;"></i></a>
+                <h1 style="margin: -20px 0 0 50px;"><b style="font-size: .8em;">Account Settings</b></h1>
             </div>
         </div>
-        {% for ures in urev %}
+        <form method="POST">
         <div class="search-result-card bg-light w-75 mx-auto p-5 mb-lg-4">
-            <h1 class="mb-4"><b>Pending Reservation</b></h1>
-            <div class="row">
-                <div class="col" id="startup-tab-1">
-                    <img class="pnd-res-img" src="{% static ures.rmimg %}" onerror="this.onerror=null;this.src='{% static 'assets/images/conferenceroom_images/default.jpg' %}';">
-                </div>
-                <div class="col-auto" id="startup-tab-1">
-                    <h1 style="margin-top: -8px;"><b>{{ures.rmname}}</b></h1>
-                    <h4 class="price" style="color: #5D9F5C; font-size: 3em; margin-top: -15px;"><b>₱{{ures.prc}}</b></h4>
-                    <h6 style="margin-top: 1%;">Capacity: <i class="fa fa-user"></i><b> {{ures.cap}}</b></h6>
-                    <h6 style="margin-top: 1%;">Room Type: <b>{{ures.rmtype}}</b></h6>
-                    <h6 style="margin-top: 1%;">Timeslot: <b>{{ures.tmslt}}</b></h6>
-                    <h6 style="margin-top: 1%;">Date of Reservation: <b>{{ures.resmadedate}}</b></h6>
-                    <h6 style="margin-top: 1%;">Reservation Schedule: <b>{{ures.resdate}}</b></h6>
-                    <div class="modal-footer" style="padding: 1rem 0 !important;margin-top: 12.10rem; ">
-                        <button type="submit" id="btnReserve" name="btnReserve" style="height: 50px; width: 32vw" class="btn btn-danger" required>Cancel Reservation</button>
-                    </div>
-                </div>
+            <h1 class="mb-4"><b>Edit Account Details</b></h1>
+            <div class="form-group">
+                <label for="exampleInputEmail1">First Name</label>
+                <input type="text" name="fname" class="border w-50 form-control" placeholder="ex. John" value="{{logged.fname}}">
+            </div>
+            <div class="form-group">
+                <label for="exampleInputEmail1">Last Name</label>
+                <input type="text" name="lname" class="border w-50 form-control" placeholder="ex. Doe" value="{{logged.lname}}">
+            </div>
+            <div class="form-group">
+                <label for="exampleInputEmail1">Email address</label>
+                <input type="email" name="email" class="w-50 form-control" placeholder="ex. johndoe@gmail.com" value="{{logged.email}}">
+            </div>
+            <div class="form-group">
+                <label for="exampleInputEmail1">Address</label>
+                <input type="address" name="add" class="w-50 form-control" placeholder="ex. Metro Polis, Philippines" value="{{logged.add}}">
+            </div>
+            <div class="form-group">
+                <label for="exampleInputEmail1">Mobile Number</label>
+                <input type="tel" name="mobile" class="w-50 form-control" placeholder="ex. 09420696969"value="{{logged.mobile}}">
+            </div>
+            <div class="form-group">
+                <label for="exampleInputEmail1">Password</label>
+                <input onfocusout="checkPassword()" type="password" name="pword" id="password" class="w-50 form-control" placeholder="ex. johndoe@gmail.com" value="{{logged.pword}}">
+            </div>
+            <div class="form-group">
+                <label for="exampleInputEmail1">Confirm Password</label>
+                <input onfocusout="checkPassword()" type="password" name = "conf" id="passwordConfirmation" class="w-50 form-control" placeholder="ex. johndoe@gmail.com" required>
             </div>
 
+            <button type="button" id="btnUpdate" style="width: 10%" class="btn btn-primary" data-toggle="modal" data-target="#updateAccount" disabled>Confirm</button>
         </div>
-        {% empty %}
-        <div class="search-result-card bg-light w-75 mx-auto p-5 mb-lg-4">
-            <h1 class="mb-4"><b>Pending Reservation</b></h1>
-            <img class="mx-auto w-100" style="margin-top: -150px;margin-bottom: 200px;opacity: -webkit-filter: brightness(80%);" src="{% static 'assets/images/urban-681.png' %}" alt="">
-            <h4 class="mx-auto" style="margin-top: -600px;margin-bottom: 350px"><i style="color: gray;">Looks like this place is a little deserted...</i></h4>
-        </div>
-        {% endfor %}
-
-        <div class="search-result-card bg-light w-75 mx-auto p-5">
-            <h1 class="mb-4"><b>Recent</b></h1>
-            <div class="container border border-dark rounded w-100 p-1" style="box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;">
-                <div class="row">
-                    <div class="col-auto ml-4 mr-4" id="startup-tab-1">
-                        &nbsp;&nbsp;
+        
+        <!-- MODAL Confirm Update -->
+        <div class="modal fade" id="updateAccount" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" style='background-color: rgba(0,0,0,0.5);'>
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Update Account</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
                     </div>
-                    <div class="col-auto ml-4 mr-5" id="startup-tab-1">
-                        <b>Room Name</b>
+                    {% csrf_token %}
+                    <div class="modal-body">
+                        Are you sure you want to update your account?
                     </div>
-                    <div class="col-auto ml-4 mr-4" id="startup-tab-1">
-                        <b>Reservation Date</b>
+                    <div class="modal-footer">
+                        <button type="submit" name="btnUpdate" class="btn btn-primary" style="margin-left: 330px;">YES</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">NO</button>
                     </div>
-                    <div class="col-auto ml-4 mr-4" id="startup-tab-1">
-                        <b>Reservation Sched</b>
-                    </div>
-                    <div class="col-auto ml-4 mr-4" id="startup-tab-1">
-                        <b>Time of Day</b>
-                    </div>
-                    <div class="col-auto ml-4 mr-4" id="startup-tab-1">
-                        <b>Price</b>
-                    </div>
+              
                 </div>
             </div>
-            {% for userve in ureserve%}
-            <div class="container border border-dark rounded w-100 p-1" style="margin-top: 20px; box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;">
-                <div class="row p-1 ">
-                    <div class="col-auto ml-3 " id="startup-tab-1">
-                        <img src="{% static userve.rmimg %}" width="60px" style="border-radius: 10%;">
-                    </div>
-                    <div class="col-auto mr-3 mt-3 col-text-style" id="startup-tab-1">
-                        {{userve.rmname}}
-                    </div>
-                    <div class="col-auto ml-4 mr-4 mt-3 col-text-style " id="startup-tab-1 ">
-                        {{userve.resmadedate}}
-                    </div>
-                    <div class="col-auto ml-4 mr-4 mt-3 col-text-style" id="startup-tab-1">
-                        {{userve.resdate}}
-                    </div>
-                    <div class="col-auto ml-4 mt-3 col-text-style" id="startup-tab-1 ">
-                        {{userve.tmslt}}
-                    </div>
-                    <div class="col-auto ml-2 mt-3 col-text-style" id="startup-tab-1 ">
-                        {{userve.prc}}
-                    </div>
-                </div>
-            </div>
-            {% endfor %}
         </div>
-    </div>
-
+    </form>
     <footer>
         <div>
             Follow us on our social media for daily updates!<br>
@@ -157,6 +134,23 @@
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.14/jquery.datetimepicker.full.min.js" integrity="sha512-KL5fDK2RZmIUFucgSH+KCPs93qUv1+Vflr731R9uh+hb82P9YcZM1nk4TWgOznWd+HuI2GtNaG5rLQwb+8xDNw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script>
+        function checkPassword() { //poggerz
+            var pw1 = document.getElementById("password").value;
+            var pw2 = document.getElementById("passwordConfirmation").value;
+            var x = document.getElementById("password-message");
+            if (pw1 == null || pw1 == "" || pw2 == null || pw2 == "") {
+                document.getElementById("btnUpdate").disabled = true;
+            } else {
+                if (pw1 != pw2) {
+                    x.style.display = "block";
+                    document.getElementById("btnUpdate").disabled = true;
+                } else {
+                    document.getElementById("btnUpdate").disabled = false;
+                }
+            }
+        }
+    </script>
     <script>
         jQuery('#datetimepicker ').datetimepicker({
             timepicker: false,

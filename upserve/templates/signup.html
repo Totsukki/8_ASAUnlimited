@@ -31,11 +31,15 @@
             <img src="https://bootstrapious.com/i/snippets/sn-registeration/illustration.svg" alt="" class="img-fluid mb-3 d-none d-md-block">
             <h1>Create an Account</h1>
         </div>
-
         <!-- Registration Form -->
 
         <div class="col-md-7 col-lg-6 ml-auto">
             <form id="SignUpForm" method="POST" action="#">
+                {% for msg in messages %} 
+                    <div class="error-msg">
+                        {{msg}}
+                    </div>    
+                {% endfor %}
                 {% csrf_token %}
                 <div class="row">
                     <!-- First Name -->

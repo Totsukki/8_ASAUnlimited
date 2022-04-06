@@ -42,7 +42,7 @@ class MyIndexLoggedView(View):
 		logged = Users.objects.get(uid = request.session['uid'])
 		rooms = Room.objects.raw("SELECT *, COUNT(tblReserve.rmid_id) as 'count' FROM `tblReserve` RIGHT JOIN tblRoom on tblReserve.rmid_id = tblRoom.rmid group by rmid order by 'count' desc limit 6")
 		rooms_all = Room.objects.all();
-		print(request.session['success'])
+		# print(request.session['success'])
 		if(request.session['success']==1):
 			messages.error(request, 'Successfully booked a reservation!')
 		context = {
@@ -153,9 +153,8 @@ class MySearchResultsView(View):
 class MyIndexLogged_Reservations(View):
 	def get(self, request):
 		logged = Users.objects.get(uid = request.session['uid'])
-		urev = Room.objects.raw("SELECT a.*, b.* FROM tblRoom a inner join tblReserve b on a.rmid = b.rmid_id where b.uid_id=%s and pending=TRUE limit 1", [request.session['uid']])
+		urev = Room.objects.raw("SELECT a.*, b.* FROM tblRoom a inner join tblReserve b on a.rmid = b.rmid_id where b.uid_id=%s and pending=TRUE order by resmadedate desc limit 1", [request.session['uid']])
 		ureserve = Reserve.objects.raw("SELECT a.*, b.rmname, b.prc, b.rmimg FROM tblReserve a inner join tblRoom b on a.rmid_id = b.rmid where a.uid_id=%s order by resmadedate desc", [request.session['uid']])
-		
 		context = {
 			'logged' : logged,
 			'urev' : urev,
@@ -171,7 +170,11 @@ class MyIndexLogged_Reservations(View):
 				except KeyError:
 					pass
 				return redirect('my_index_view')
-
+			elif 'btnCancelReserve' in request.POST:
+				resid = request.POST.get("resid")
+				Reserve.objects.filter(resid=resid).delete()
+				return redirect('my_indexlogged-reservations_view')
+				
 
 class MyIndexLogged_AccountSettings(View):
 	def get(self, request):
@@ -302,7 +305,7 @@ class MyAdminDashboardView(View):
 			mon = request.GET['month']
 			wk = request.GET['week']
 			dy = request.GET['day']
-			print("month:", mon, "| week:", wk, "| day:" , dy)
+			# print("month:", mon, "| week:", wk, "| day:" , dy)
 			if((mon and wk and dy)!= ''):
 				exyear = datetime.strptime(mon, "%Y-%m").year #string to 'date' datatype
 				exmonth = datetime.strptime(mon, "%Y-%m").month#string to 'date' datatype
@@ -528,7 +531,7 @@ class MyLoginView(View):
 			elif instance.email == email:
 				if instance.pword == pword:
 					request.session['uid'] = instance.uid
-					print(request.session['uid'])
+					# print(request.session['uid'])
 					return redirect('my_indexlogged_view')
 				else:
 					messages.error(request, 'Email or password is incorrect.')
@@ -551,24 +554,30 @@ class MySignUpView(View):
 		form = UsersForm(request.POST)
 		if request.method == 'POST':
 			if form.is_valid():
+				users = Users.objects.all()
 				fname = request.POST.get("fname")
 				lname = request.POST.get("lname")
 				pword = request.POST.get("pword")
 				email = request.POST.get("email")
 				add = request.POST.get("add")
 				mobile = request.POST.get("mobile")
-
+				for u in users:
+					if (u.email == request.POST['email']):
+						messages.error(request, "The entered email already has an existing account.")
+						return redirect('my_signup_view')
+						
 				form = Users(fname = fname, lname = lname, 
 							pword = pword, email = email, add = add, 
 							mobile = mobile)
 				form.save()
 				user = Users.objects.get(email=request.POST.get("email"))
+				
 				request.session['uid'] = user.uid;
 				return redirect('my_indexlogged_view')
-					
+
 			else:
-				print(form.errors)
-				return HttpResponse('Form Invalid.')
+				messages.error(request, "The entered email already has an existing account.")
+				return redirect('my_signup_view')
 
 
 	

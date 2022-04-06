@@ -58,7 +58,7 @@
         </div>
         {% for ures in urev %}
         <div class="search-result-card bg-light w-75 mx-auto p-5 mb-lg-4">
-            <h1 class="mb-4"><b>Pending Reservation</b></h1>
+            <h1 class="mb-4"><b>Recent Reservation</b></h1>
             <div class="row">
                 <div class="col" id="startup-tab-1">
                     <img class="pnd-res-img" src="{% static ures.rmimg %}" onerror="this.onerror=null;this.src='{% static 'assets/images/conferenceroom_images/default.jpg' %}';">
@@ -71,42 +71,49 @@
                     <h6 style="margin-top: 1%;">Timeslot: <b>{{ures.tmslt}}</b></h6>
                     <h6 style="margin-top: 1%;">Date of Reservation: <b>{{ures.resmadedate}}</b></h6>
                     <h6 style="margin-top: 1%;">Reservation Schedule: <b>{{ures.resdate}}</b></h6>
-                    <div class="modal-footer" style="padding: 1rem 0 !important;margin-top: 12.10rem; ">
-                        <button type="submit" id="btnReserve" name="btnReserve" style="height: 50px; width: 32vw" class="btn btn-danger" required>Cancel Reservation</button>
-                    </div>
+                    <form method="POST">
+                        {% csrf_token %}
+                        <input name="resid" value="{{ ures.resid }}" hidden>
+                        <div class="modal-footer" style="position: absolute; padding: 1rem 0 !important;margin-top: 11rem; ">
+                            <button type="submit" id="btnCancelReserve" name="btnCancelReserve" style="height: 50px; width: 32vw" class="btn btn-danger" required>Cancel Reservation</button>
+                        </div>
+                    </form>
                 </div>
             </div>
 
         </div>
         {% empty %}
         <div class="search-result-card bg-light w-75 mx-auto p-5 mb-lg-4">
-            <h1 class="mb-4"><b>Pending Reservation</b></h1>
+            <h1 class="mb-4"><b>Most Recent Pending</b></h1>
             <img class="mx-auto w-100" style="margin-top: -150px;margin-bottom: 200px;opacity: -webkit-filter: brightness(80%);" src="{% static 'assets/images/urban-681.png' %}" alt="">
             <h4 class="mx-auto" style="margin-top: -600px;margin-bottom: 350px"><i style="color: gray;">Looks like this place is a little deserted...</i></h4>
         </div>
         {% endfor %}
 
         <div class="search-result-card bg-light w-75 mx-auto p-5">
-            <h1 class="mb-4"><b>Recent</b></h1>
+            <h1 class="mb-4"><b>History</b></h1>
             <div class="container border border-dark rounded w-100 p-1" style="box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;">
                 <div class="row">
                     <div class="col-auto ml-4 mr-4" id="startup-tab-1">
                         &nbsp;&nbsp;
                     </div>
-                    <div class="col-auto ml-4 mr-5" id="startup-tab-1">
+                    <div class="col-auto ml-4 mr-3" id="startup-tab-1">
                         <b>Room Name</b>
                     </div>
-                    <div class="col-auto ml-4 mr-4" id="startup-tab-1">
+                    <div class="col-auto ml-3 mr-3" id="startup-tab-1">
                         <b>Reservation Date</b>
                     </div>
-                    <div class="col-auto ml-4 mr-4" id="startup-tab-1">
+                    <div class="col-auto ml-1 mr-2" id="startup-tab-1">
                         <b>Reservation Sched</b>
                     </div>
-                    <div class="col-auto ml-4 mr-4" id="startup-tab-1">
+                    <div class="col-auto ml-1 mr-4" id="startup-tab-1">
                         <b>Time of Day</b>
                     </div>
-                    <div class="col-auto ml-4 mr-4" id="startup-tab-1">
+                    <div class="col-auto mr-3" id="startup-tab-1">
                         <b>Price</b>
+                    </div>
+                    <div class="col-auto ml-5" id="startup-tab-1">
+                        <b>Status</b>
                     </div>
                 </div>
             </div>
@@ -116,20 +123,27 @@
                     <div class="col-auto ml-3 " id="startup-tab-1">
                         <img src="{% static userve.rmimg %}" width="60px" style="border-radius: 10%;">
                     </div>
-                    <div class="col-auto mr-3 mt-3 col-text-style" id="startup-tab-1">
+                    <div class="col-auto mt-3 col-text-style" id="startup-tab-1">
                         {{userve.rmname}}
                     </div>
-                    <div class="col-auto ml-4 mr-4 mt-3 col-text-style " id="startup-tab-1 ">
+                    <div class="col-auto ml-1 mr-2 mt-3 col-text-style " id="startup-tab-1 ">
                         {{userve.resmadedate}}
                     </div>
-                    <div class="col-auto ml-4 mr-4 mt-3 col-text-style" id="startup-tab-1">
+                    <div class="col-auto ml-1 mr-4 mt-3 col-text-style" id="startup-tab-1">
                         {{userve.resdate}}
                     </div>
-                    <div class="col-auto ml-4 mt-3 col-text-style" id="startup-tab-1 ">
+                    <div class="col-auto ml-1 mt-3 col-text-style" style="width: 130px" id="startup-tab-1 ">
                         {{userve.tmslt}}
                     </div>
-                    <div class="col-auto ml-2 mt-3 col-text-style" id="startup-tab-1 ">
+                    <div class="col-auto mt-3 col-text-style" style="width: 100px" id="startup-tab-1 ">
                         {{userve.prc}}
+                    </div>
+                    <div class="col-auto ml-5 mt-3 col-text-style" style="width:100px" id="startup-tab-1 ">
+                        {% if userve.pending == False %}
+                            <img src="{% static 'assets/images/check.png'%}" title="Finished" width="30px">
+                        {% else %}
+                            <img src="{% static 'assets/images/stopwatch.png'%}" title="Pending" width="32px">
+                        {% endif %}
                     </div>
                 </div>
             </div>
@@ -184,28 +198,6 @@
             }
 
         });
-
-        // function hideSearchResult() {
-        //     var x = document.getElementById("search-result");
-        //     var y = document.getElementById("content-all");
-        //     y.style.display = "block";
-        //     x.style.display = "none";
-        // }
-
-        // function unhideSearchResult() {
-        //     var x = document.getElementById("search-result");
-        //     var y = document.getElementById("content-all");
-        //     x.style.display = "block";
-        //     y.style.display = "none";
-        // } { % endcomment %
-        // }
-        // window.onload = function() {
-        //     var reloading = sessionStorage.getItem("reloading");
-        //     if (reloading) {
-        //         sessionStorage.removeItem("reloading");
-        //         unhideSearchResult();
-        //     }
-        // }
     </script>
 </body>
 

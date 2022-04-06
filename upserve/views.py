@@ -38,22 +38,22 @@ class MyIndexView(View):
 
 class MyIndexLoggedView(View):
 	def get(self, request):
-		# try:
-		logged = Users.objects.get(uid = request.session['uid'])
-		rooms = Room.objects.raw("SELECT *, COUNT(tblReserve.rmid_id) as 'count' FROM `tblReserve` RIGHT JOIN tblRoom on tblReserve.rmid_id = tblRoom.rmid group by rmid order by 'count' desc limit 6")
-		rooms_all = Room.objects.all();
-		# print(request.session['success'])
-		if(request.session['success']==1):
-			messages.error(request, 'Successfully booked a reservation!')
-		context = {
-			'logged' : logged,
-			'rooms' : rooms,
-			'rooms_all' : rooms_all
-		}
-		return render(request, 'index_logged.html', context)
-		# except KeyError:
-		# 	pass
-		# 	return redirect('my_indexlogged_v')
+		try:
+			logged = Users.objects.get(uid = request.session['uid'])
+			rooms = Room.objects.raw("SELECT *, COUNT(tblReserve.rmid_id) as 'count' FROM `tblReserve` RIGHT JOIN tblRoom on tblReserve.rmid_id = tblRoom.rmid group by rmid order by 'count' desc limit 6")
+			rooms_all = Room.objects.all();
+			# print(request.session['success'])
+			if(request.session['success']==1):
+				messages.error(request, 'Successfully booked a reservation!')
+			context = {
+				'logged' : logged,
+				'rooms' : rooms,
+				'rooms_all' : rooms_all
+			}
+			return render(request, 'index_logged.html', context)
+		except KeyError:
+			pass
+			return redirect('my_index_view')
 	def post(self, request):		
 		if request.method == 'POST':
 			if 'btnLogout' in request.POST:
@@ -152,15 +152,18 @@ class MySearchResultsView(View):
 				return redirect('my_index_view')
 class MyIndexLogged_Reservations(View):
 	def get(self, request):
-		logged = Users.objects.get(uid = request.session['uid'])
-		urev = Room.objects.raw("SELECT a.*, b.* FROM tblRoom a inner join tblReserve b on a.rmid = b.rmid_id where b.uid_id=%s and pending=TRUE order by resmadedate desc limit 1", [request.session['uid']])
-		ureserve = Reserve.objects.raw("SELECT a.*, b.rmname, b.prc, b.rmimg FROM tblReserve a inner join tblRoom b on a.rmid_id = b.rmid where a.uid_id=%s order by resmadedate desc", [request.session['uid']])
-		context = {
-			'logged' : logged,
-			'urev' : urev,
-			'ureserve' : ureserve
-		}
-		return render(request, 'index_logged-reservations.html', context)
+		try:
+			logged = Users.objects.get(uid = request.session['uid'])
+			urev = Room.objects.raw("SELECT a.*, b.* FROM tblRoom a inner join tblReserve b on a.rmid = b.rmid_id where b.uid_id=%s and pending=TRUE order by resmadedate desc limit 1", [request.session['uid']])
+			ureserve = Reserve.objects.raw("SELECT a.*, b.rmname, b.prc, b.rmimg FROM tblReserve a inner join tblRoom b on a.rmid_id = b.rmid where a.uid_id=%s order by resmadedate desc", [request.session['uid']])
+			context = {
+				'logged' : logged,
+				'urev' : urev,
+				'ureserve' : ureserve
+			}
+			return render(request, 'index_logged-reservations.html', context)
+		except:
+			return redirect('my_index_view')
 	def post(self, request):
 		form = ReserveForm(request.POST)		
 		if request.method == 'POST':
@@ -188,6 +191,8 @@ class MyIndexLogged_AccountSettings(View):
 				'error' : error
 			}
 			return render(request, 'index_logged-account-settings.html', context)
+		except KeyError:
+			return redirect('my_index_view')
 		except:
 			logged = Users.objects.get(uid = request.session['uid'])
 			request.session['conf'] = 0
@@ -213,14 +218,17 @@ class MyIndexLogged_AccountSettings(View):
 						return redirect('/home/accountsettings?err=1')
 class MyIndexLogged_AccountEdit(View):
 	def get(self, request):
-		logged = Users.objects.get(uid = request.session['uid'])
-		context = {
-			'logged' : logged,
-		}
-		if(request.session['conf']==1):
-			return render(request, 'index_logged-account-edit.html', context)
-		else: 
-			return redirect('my_indexlogged-accountsettings_view')	
+		try:
+			logged = Users.objects.get(uid = request.session['uid'])
+			context = {
+				'logged' : logged,
+			}
+			if(request.session['conf']==1):
+				return render(request, 'index_logged-account-edit.html', context)
+			else: 
+				return redirect('my_indexlogged-accountsettings_view')
+		except:
+			return redirect('my_index_view')
 	def post(self, request):
 			if request.POST:
 				if 'btnUpdate' in request.POST:
